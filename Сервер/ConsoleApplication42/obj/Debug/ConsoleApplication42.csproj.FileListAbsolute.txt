@@ -1,0 +1,36 @@
+c:\users\данил\documents\visual studio 2013\Projects\ConsoleApplication42\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.config
+c:\users\данил\documents\visual studio 2013\Projects\ConsoleApplication42\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe
+c:\users\данил\documents\visual studio 2013\Projects\ConsoleApplication42\ConsoleApplication42\bin\Debug\ConsoleApplication42.pdb
+c:\users\данил\documents\visual studio 2013\Projects\ConsoleApplication42\ConsoleApplication42\obj\Debug\ConsoleApplication42.csprojResolveAssemblyReference.cache
+c:\users\данил\documents\visual studio 2013\Projects\ConsoleApplication42\ConsoleApplication42\obj\Debug\ConsoleApplication42.exe
+c:\users\данил\documents\visual studio 2013\Projects\ConsoleApplication42\ConsoleApplication42\obj\Debug\ConsoleApplication42.pdb
+c:\users\данил\documents\visual studio 2013\Projects\ConsoleApplication42\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.CodeAnalysisLog.xml
+c:\users\данил\documents\visual studio 2013\Projects\ConsoleApplication42\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.lastcodeanalysissucceeded
+c:\users\данил\documents\visual studio 2013\Projects\ConsoleApplication42\ConsoleApplication42\obj\Debug\ConsoleApplication42.csproj.ResolveComReference.cache
+C:\Users\Данил\Desktop\сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.config
+C:\Users\Данил\Desktop\сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.csproj.ResolveComReference.cache
+C:\Users\Данил\Desktop\сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.exe
+C:\Users\Данил\Desktop\сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.pdb
+C:\Users\Данил\Desktop\сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe
+C:\Users\Данил\Desktop\сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.pdb
+C:\Users\Данил\Desktop\сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.CodeAnalysisLog.xml
+C:\Users\Данил\Desktop\сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.lastcodeanalysissucceeded
+C:\Users\Данил\Desktop\сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.csprojResolveAssemblyReference.cache
+C:\Users\Данил\Desktop\Очередь\Сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.config
+C:\Users\Данил\Desktop\Очередь\Сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.csproj.ResolveComReference.cache
+C:\Users\Данил\Desktop\Очередь\Сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.exe
+C:\Users\Данил\Desktop\Очередь\Сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.pdb
+C:\Users\Данил\Desktop\Очередь\Сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe
+C:\Users\Данил\Desktop\Очередь\Сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.pdb
+C:\Users\Данил\Desktop\Очередь\Сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.CodeAnalysisLog.xml
+C:\Users\Данил\Desktop\Очередь\Сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.lastcodeanalysissucceeded
+C:\Users\Данил\Desktop\Очередь\Сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.csprojResolveAssemblyReference.cache
+C:\Users\Данил\Desktop\Очередь - копия\Сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.config
+C:\Users\Данил\Desktop\Очередь - копия\Сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.csproj.ResolveComReference.cache
+C:\Users\Данил\Desktop\Очередь - копия\Сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.exe
+C:\Users\Данил\Desktop\Очередь - копия\Сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.pdb
+C:\Users\Данил\Desktop\Очередь - копия\Сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe
+C:\Users\Данил\Desktop\Очередь - копия\Сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.pdb
+C:\Users\Данил\Desktop\Очередь - копия\Сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.CodeAnalysisLog.xml
+C:\Users\Данил\Desktop\Очередь - копия\Сервер\ConsoleApplication42\bin\Debug\ConsoleApplication42.exe.lastcodeanalysissucceeded
+C:\Users\Данил\Desktop\Очередь - копия\Сервер\ConsoleApplication42\obj\Debug\ConsoleApplication42.csprojResolveAssemblyReference.cache

@@ -1,0 +1,16 @@
+﻿<Window x:Class="WpfApplication3.RunServWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Window1" Height="170" Width="379" ResizeMode="CanMinimize" Loaded="Window_Loaded">
+    <Grid>
+        <ComboBox Name ="IPBox" HorizontalAlignment="Left" Margin="188,30,0,0" VerticalAlignment="Top" Width="120"/>
+        <Expander Header="Expander" HorizontalAlignment="Left" Height="1" Margin="751,192,-465,0" VerticalAlignment="Top" Width="6">
+            <Grid Background="#FFE5E5E5"/>
+        </Expander>
+        <Label Content="IP адрес сервера:" HorizontalAlignment="Left" Margin="36,26,0,0" VerticalAlignment="Top"/>
+        <Label Content="Порт сервера:" HorizontalAlignment="Left" Margin="36,57,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="portBox" HorizontalAlignment="Left" Height="23" Margin="188,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Старт" HorizontalAlignment="Left" Margin="78,97,0,0" VerticalAlignment="Top" Width="75" Click="bStart_Click"/>
+        <Button Content="Отмена" Margin="218,97,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75" Click="bExit_Click"/>
+    </Grid>
+</Window>
