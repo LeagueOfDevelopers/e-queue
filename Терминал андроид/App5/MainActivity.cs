@@ -19,7 +19,12 @@ namespace App5
     public class MainActivity : Activity
     {
         TextView watch;
+        EditText iptxt;
+        EditText porttxt;
+        Button bconnect;
 
+        string folderPath;
+        string filePath;
         IPEndPoint ipEndPoint;
         Socket SSender;
         IAsyncResult ar;
@@ -30,13 +35,19 @@ namespace App5
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.WatchQueue);
+            SetContentView(Resource.Layout.Welcome);
 
             watch = (TextView)FindViewById(Resource.Id.textClock);
-            if(checkConfig())
-            {
-                Connecting();
-            }
+            iptxt = (EditText)FindViewById(Resource.Id.text_ip);
+            porttxt = (EditText)FindViewById(Resource.Id.text_port);
+            bconnect = (Button)FindViewById(Resource.Id.bConnect);
+
+            folderPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DataDirectory.ToString()) + "/Terminal";
+            filePath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DataDirectory.ToString()) + "/Terminal/ipconfig";
+
+            bconnect.Click += bconnect_Click;
+
+            checkConfig();
         }
         protected override void OnResume()
         {
@@ -55,45 +66,61 @@ namespace App5
                 {
                     if (SSender.Connected)
                         ShowMessage("Connection", "Соединение установлено", false);
+
                     else
                     {
-                        ShowMessage("Connection", "Не удалось установить соединение", true);
+                        ShowMessage("Connection", "Не удалось установить соединение", false);
                     }
                     q = false;
                 }
             }
         }
-        bool checkConfig()
+        void checkConfig()
         {
-            var folderPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DataDirectory.ToString()) +"/Terminal";
-            var filePath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DataDirectory.ToString()) + "/Terminal/ipconfig";
             if (!File.Exists(filePath))
             {
                 if (!Directory.Exists(folderPath))
                     Directory.CreateDirectory(folderPath);
                 File.Create(filePath);
-                ShowMessage("IpConfig", String.Format("Создан файл конфигурации ({0}). Пожалуйста заполните его и перезапустите приложение", filePath), true);
-                return false;
+                return;
             }
             else
             {
                 StreamReader sr = new StreamReader(filePath);
                 try
                 {
-                    string str = sr.ReadLine();
-                    IPAddress ip = IPAddress.Parse(str);
+                    IPAddress ip = IPAddress.Parse(sr.ReadLine());
                     int port = int.Parse(sr.ReadLine());
                     ipEndPoint = new IPEndPoint(ip, port);
+                    iptxt.Text = ip.ToString();
+                    porttxt.Text = port.ToString();
                     sr.Close();
-                    return true;
                 }
                 catch
                 {
                     ShowMessage("IpConfigError", String.Format("Информация в файле конфигурации ({0:s}) некорректна", filePath), false);
                     sr.Close();
-                    return false;
                 }
             }
+        }
+        void bconnect_Click(object sender, EventArgs e)
+        {
+            ShowMessage("Connection", String.Format("Попытка подключения..."), false);
+            try
+            {
+                IPAddress ip = IPAddress.Parse(iptxt.Text);
+                int port = int.Parse(porttxt.Text);
+                ipEndPoint = new IPEndPoint(ip, port);
+                StreamWriter sw = new StreamWriter(filePath, false);
+                sw.WriteLine(ip.ToString());
+                sw.WriteLine(port.ToString());
+                sw.Close();
+            }
+            catch
+            {
+                ShowMessage("IpConfigError", String.Format("Данные введены некорректно"), false);
+            }
+            Connecting();
         }
         void Connecting()
         {

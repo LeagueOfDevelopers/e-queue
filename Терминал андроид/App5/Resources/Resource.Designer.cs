@@ -69,6 +69,9 @@ namespace App5
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f06000f
+			public const int bConnect = 2131099663;
+			
 			// aapt resource value: 0x7f06000a
 			public const int button1 = 2131099658;
 			
@@ -83,6 +86,9 @@ namespace App5
 			
 			// aapt resource value: 0x7f060008
 			public const int linearLayout4 = 2131099656;
+			
+			// aapt resource value: 0x7f06000c
+			public const int linearLayout5 = 2131099660;
 			
 			// aapt resource value: 0x7f060004
 			public const int listView1 = 2131099652;
@@ -105,6 +111,12 @@ namespace App5
 			// aapt resource value: 0x7f06000b
 			public const int textView4 = 2131099659;
 			
+			// aapt resource value: 0x7f06000d
+			public const int text_ip = 2131099661;
+			
+			// aapt resource value: 0x7f06000e
+			public const int text_port = 2131099662;
+			
 			static Id()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -121,6 +133,9 @@ namespace App5
 			// aapt resource value: 0x7f030000
 			public const int WatchQueue = 2130903040;
 			
+			// aapt resource value: 0x7f030001
+			public const int Welcome = 2130903041;
+			
 			static Layout()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -136,6 +151,9 @@ namespace App5
 			
 			// aapt resource value: 0x7f040001
 			public const int ApplicationName = 2130968577;
+			
+			// aapt resource value: 0x7f040007
+			public const int Connect = 2130968583;
 			
 			// aapt resource value: 0x7f040000
 			public const int Hello = 2130968576;
@@ -155,11 +173,11 @@ namespace App5
 			// aapt resource value: 0x7f040005
 			public const int txtLayout3 = 2130968581;
 			
-			// aapt resource value: 0x7f040008
-			public const int забрать_справку = 2130968584;
+			// aapt resource value: 0x7f040009
+			public const int забрать_справку = 2130968585;
 			
-			// aapt resource value: 0x7f040007
-			public const int основнаяОчередь = 2130968583;
+			// aapt resource value: 0x7f040008
+			public const int основнаяОчередь = 2130968584;
 			
 			static String()
 			{
