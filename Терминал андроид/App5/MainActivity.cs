@@ -15,7 +15,7 @@ using System.Threading;
 namespace App5
 {
     enum requests { prop1, prop2, prop3, prop4, prop5, prop6, EOSes, GetBD, GetHD, GetCl, SetCg, GetCg, enumErr }
-    [Activity(Label = "App5", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Light.NoTitleBar.Fullscreen", ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.SensorLandscape)]
+    [Activity(Label = "Enter", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Light.NoTitleBar.Fullscreen", ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.SensorLandscape)]
     public class MainActivity : Activity
     {
         TextView watch;
@@ -59,14 +59,16 @@ namespace App5
             while (true)
             {
                 await Task.Delay(100);
-                DateTime NowTime = DateTime.Now;
-                string NowTimeStr = NowTime.ToString("HH:mm:ss");
-                watch.Text = "Время:\n" + NowTimeStr;
+                watch.Text = "Время:\n" + DateTime.Now.ToString("HH:mm:ss");
                 if(q)
                 {
                     if (SSender.Connected)
+                    {
                         ShowMessage("Connection", "Соединение установлено", false);
-
+                        SCT sct = new SCT(SSender);
+                        StartActivity(typeof(DisplayingQueue));
+                        this.Finish();
+                    }
                     else
                     {
                         ShowMessage("Connection", "Не удалось установить соединение", false);

@@ -68,8 +68,15 @@
                 android:minWidth="25px"
                 android:minHeight="25px"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listView1" />
+                android:layout_height="0px"
+                android:layout_weight="20"
+                android:id="@+id/mainlist" />
+            <TextView
+                android:text="Всего: 0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/counter1"
+                android:gravity="center" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -89,8 +96,15 @@
                 android:minWidth="25px"
                 android:minHeight="25px"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listView2" />
+                android:layout_height="0px"
+                android:layout_weight="1"
+                android:id="@+id/secondlist" />
+            <TextView
+                android:text="Всего: 0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/counter2"
+                android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -111,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:id="@+id/button1"
+            android:id="@+id/benter"
             android:background="@drawable/Button"
             style="@style/button_text" />
         <TextView

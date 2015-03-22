@@ -33,7 +33,6 @@ namespace WpfApplication3
         public Terminal(Socket sct, MainWindow MWind)
         {
             InitializeComponent();
-            logo.Source = new BitmapImage(new Uri(Environment.CurrentDirectory + @"\logo.png"));
             Client = sct;
             MainWindow = MWind;
             temp1 = true;

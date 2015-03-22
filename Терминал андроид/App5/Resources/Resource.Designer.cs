@@ -69,11 +69,17 @@ namespace App5
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f06000f
-			public const int bConnect = 2131099663;
+			// aapt resource value: 0x7f060011
+			public const int bConnect = 2131099665;
 			
-			// aapt resource value: 0x7f06000a
-			public const int button1 = 2131099658;
+			// aapt resource value: 0x7f06000c
+			public const int benter = 2131099660;
+			
+			// aapt resource value: 0x7f060005
+			public const int counter1 = 2131099653;
+			
+			// aapt resource value: 0x7f060009
+			public const int counter2 = 2131099657;
 			
 			// aapt resource value: 0x7f060001
 			public const int linearLayout1 = 2131099649;
@@ -81,20 +87,20 @@ namespace App5
 			// aapt resource value: 0x7f060002
 			public const int linearLayout2 = 2131099650;
 			
-			// aapt resource value: 0x7f060005
-			public const int linearLayout3 = 2131099653;
+			// aapt resource value: 0x7f060006
+			public const int linearLayout3 = 2131099654;
 			
-			// aapt resource value: 0x7f060008
-			public const int linearLayout4 = 2131099656;
+			// aapt resource value: 0x7f06000a
+			public const int linearLayout4 = 2131099658;
 			
-			// aapt resource value: 0x7f06000c
-			public const int linearLayout5 = 2131099660;
+			// aapt resource value: 0x7f06000e
+			public const int linearLayout5 = 2131099662;
 			
 			// aapt resource value: 0x7f060004
-			public const int listView1 = 2131099652;
+			public const int mainlist = 2131099652;
 			
-			// aapt resource value: 0x7f060007
-			public const int listView2 = 2131099655;
+			// aapt resource value: 0x7f060008
+			public const int secondlist = 2131099656;
 			
 			// aapt resource value: 0x7f060000
 			public const int textClock = 2131099648;
@@ -102,20 +108,20 @@ namespace App5
 			// aapt resource value: 0x7f060003
 			public const int textView1 = 2131099651;
 			
-			// aapt resource value: 0x7f060006
-			public const int textView2 = 2131099654;
-			
-			// aapt resource value: 0x7f060009
-			public const int textView3 = 2131099657;
+			// aapt resource value: 0x7f060007
+			public const int textView2 = 2131099655;
 			
 			// aapt resource value: 0x7f06000b
-			public const int textView4 = 2131099659;
+			public const int textView3 = 2131099659;
 			
 			// aapt resource value: 0x7f06000d
-			public const int text_ip = 2131099661;
+			public const int textView4 = 2131099661;
 			
-			// aapt resource value: 0x7f06000e
-			public const int text_port = 2131099662;
+			// aapt resource value: 0x7f06000f
+			public const int text_ip = 2131099663;
+			
+			// aapt resource value: 0x7f060010
+			public const int text_port = 2131099664;
 			
 			static Id()
 			{
