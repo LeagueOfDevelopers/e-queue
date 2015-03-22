@@ -25,8 +25,6 @@ namespace App5
 
         string folderPath;
         string filePath;
-        IPEndPoint ipEndPoint;
-        Socket SSender;
         IAsyncResult ar;
         bool q = false; // переменная, надо ли проверять результат подключения
 
@@ -36,6 +34,8 @@ namespace App5
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Welcome);
+
+            SCT temp = new SCT();
 
             watch = (TextView)FindViewById(Resource.Id.textClock);
             iptxt = (EditText)FindViewById(Resource.Id.text_ip);
@@ -58,16 +58,24 @@ namespace App5
         {
             while (true)
             {
-                await Task.Delay(100);
+                await Task.Delay(500);
                 watch.Text = "Время:\n" + DateTime.Now.ToString("HH:mm:ss");
-                if(q)
+                
+            }
+        }
+        async void CheckConnectLoop()
+        {
+            while (true)
+            {
+                await Task.Delay(100);
+                if (q||(SCT.AR!=null&&SCT.AR.IsCompleted))
                 {
-                    if (SSender.Connected)
+                    if (SCT.Socket.Connected)
                     {
                         ShowMessage("Connection", "Соединение установлено", false);
-                        SCT sct = new SCT(SSender);
                         StartActivity(typeof(DisplayingQueue));
                         this.Finish();
+                        break;
                     }
                     else
                     {
@@ -76,6 +84,11 @@ namespace App5
                     q = false;
                 }
             }
+        }
+        async void timeout(int seconds)
+        {
+            await Task.Delay(seconds * 1000);
+            q = true;
         }
         void checkConfig()
         {
@@ -93,15 +106,16 @@ namespace App5
                 {
                     IPAddress ip = IPAddress.Parse(sr.ReadLine());
                     int port = int.Parse(sr.ReadLine());
-                    ipEndPoint = new IPEndPoint(ip, port);
+                    IPEndPoint ipEndPoint = new IPEndPoint(ip, port);
                     iptxt.Text = ip.ToString();
                     porttxt.Text = port.ToString();
                     sr.Close();
                 }
                 catch
                 {
-                    ShowMessage("IpConfigError", String.Format("Информация в файле конфигурации ({0:s}) некорректна", filePath), false);
                     sr.Close();
+                    StreamWriter sw = new StreamWriter(filePath, false);
+                    sw.Close();
                 }
             }
         }
@@ -112,42 +126,20 @@ namespace App5
             {
                 IPAddress ip = IPAddress.Parse(iptxt.Text);
                 int port = int.Parse(porttxt.Text);
-                ipEndPoint = new IPEndPoint(ip, port);
+                IPEndPoint ipEndPoint = new IPEndPoint(ip, port);
                 StreamWriter sw = new StreamWriter(filePath, false);
+                SCT.IPEndPoint = ipEndPoint;
                 sw.WriteLine(ip.ToString());
                 sw.WriteLine(port.ToString());
                 sw.Close();
+                SCT.Connecting();
+                timeout(15);
+                CheckConnectLoop();
             }
             catch
             {
                 ShowMessage("IpConfigError", String.Format("Данные введены некорректно"), false);
             }
-            Connecting();
-        }
-        void Connecting()
-        {
-            try
-            {
-                SSender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                SSender.BeginConnect(ipEndPoint, new AsyncCallback(callback), SSender);
-                new Thread(new ParameterizedThreadStart(timeout)).Start();
-            }
-            catch (SocketException exc)
-            {
-                ShowMessage("ConnectionError", String.Format("Ошибка подключения: {0}", exc.Message), false);
-            }
-
-        }
-        void callback(IAsyncResult r)
-        {
-            ar = r;
-            q = true;
-        }
-        void timeout(object ob)
-        {
-            Thread.Sleep(TimeSpan.FromSeconds(15));
-            if (ar==null||!ar.IsCompleted)
-                q = true;
         }
         void ShowMessage(string title, string message, bool exit)
         {

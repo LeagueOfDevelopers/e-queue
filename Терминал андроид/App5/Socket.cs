@@ -10,20 +10,46 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Net.Sockets;
+using System.Net;
+using System.Threading;
 
 namespace App5
 {
     public class SCT
     {
-        
-        static Socket Sock;
-        public SCT(Socket sct)
+        static IAsyncResult ar;
+        static Socket sct;
+        public SCT()
         {
-            Sock = sct;
+            sct = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
-        public static Socket GetSock()
+        public static IAsyncResult AR
         {
-                return Sock;
+            get { return ar; }
+        }
+        public static IPEndPoint IPEndPoint
+        {
+            get;
+            set;
+        }
+        public static Socket Socket
+        {
+            get { return sct; }
+        }
+        public static void Connecting()
+        {
+            try
+            {
+                sct.BeginConnect(IPEndPoint, new AsyncCallback(callback), sct);
+            }
+            catch 
+            {
+                Thread.Sleep(5000);
+            }
+        }
+        static void callback(IAsyncResult r)
+        {
+            ar = r;
         }
     }
 }

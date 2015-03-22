@@ -39,7 +39,7 @@ namespace App5
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.WatchQueue);
 
-            Socket = SCT.GetSock();
+            Socket = SCT.Socket;
             Base = new List<client>();
 
             watch = (TextView)FindViewById(Resource.Id.textClock);
