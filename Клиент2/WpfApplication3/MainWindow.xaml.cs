@@ -87,9 +87,7 @@ namespace WpfApplication3
             if (!blockAutoRefresh)
                 try
                 {
-                    string req = requests.EOSes.ToString();
-                    byte[] buf = Encoding.ASCII.GetBytes(req);
-                    Socket.Send(buf);
+                    Send(requests.EOSes.ToString());
                     Socket.Disconnect(false);
                     blockAutoRefresh = true;
                     MessageBox.Show("Соединение завершено");
@@ -218,31 +216,10 @@ namespace WpfApplication3
         }
         void LoadBD()
         {
+            Send(requests.GetBD.ToString());
+            string[] ClientBuf = Receive().Split(';');
+
             Base.Clear();
-            string str = requests.GetBD.ToString();
-            byte[] buf = Encoding.ASCII.GetBytes(str);
-            Socket.Send(buf);
-            buf = new byte[6];
-            Socket.Receive(new byte[1], 1, SocketFlags.None);
-            Socket.Receive(buf, 6, SocketFlags.None);
-            str = Encoding.ASCII.GetString(buf, 0, 6);
-            int msgsize = int.Parse(str);
-            buf = new byte[msgsize];
-            int offset = 0;
-            bool q;
-            do
-            {
-                int geted = Socket.Receive(buf, offset, msgsize, SocketFlags.None);
-                if (geted != msgsize)
-                {
-                    offset = geted;
-                    msgsize -= geted;
-                    q = true;
-                }
-                else q = false;
-            } while (q);
-            str = Encoding.ASCII.GetString(buf, 0, buf.Length);
-            string[] ClientBuf = str.Split(';');
             for (int i = 0; i < ClientBuf.Length; i++)
             {
                 try
@@ -264,30 +241,10 @@ namespace WpfApplication3
         }
         void LoadHD()
         {
+            Send(requests.GetHD.ToString());
+            string[] ClientBuf = Receive().Split(';');
+            
             History.Clear();
-            string str = requests.GetHD.ToString();
-            byte[] buf = Encoding.ASCII.GetBytes(str);
-            Socket.Send(buf);
-            buf = new byte[6]; 
-            Socket.Receive(new byte[1], 1, SocketFlags.None);
-            Socket.Receive(buf, 6, SocketFlags.None);
-            int msgsize = int.Parse(Encoding.ASCII.GetString(buf, 0, 6));
-            int offset = 0;
-            buf = new byte[msgsize];
-            bool q;
-            do
-            {
-                int geted = Socket.Receive(buf, offset, msgsize, SocketFlags.None);
-                if (geted != msgsize)
-                {
-                    offset = geted;
-                    msgsize -= geted;
-                    q = true;
-                }
-                else q = false;
-            } while (q);
-            str = Encoding.ASCII.GetString(buf, 0, buf.Length);
-            string[] ClientBuf = str.Split(';');
             for (int i = 0; i < ClientBuf.Length; i++)
             {
                 try
@@ -305,31 +262,9 @@ namespace WpfApplication3
         }
         void LoadCl(int i)
         {
-            string str = requests.GetCl.ToString();
-            byte[] buf = Encoding.ASCII.GetBytes(str);
-            Socket.Send(buf);
-            str = i.ToString("D5");
-            buf = Encoding.ASCII.GetBytes(str);
-            Socket.Send(buf);
-            buf = new byte[6];
-            Socket.Receive(new byte[1], 1, SocketFlags.None);
-            Socket.Receive(buf, 6, SocketFlags.None);
-            int msgsize = int.Parse(Encoding.ASCII.GetString(buf, 0, 6));
-            buf = new byte[msgsize];
-            int offset = 0;
-            bool q;
-            do
-            {
-                int geted = Socket.Receive(buf, offset, msgsize, SocketFlags.None);
-                if (geted != msgsize)
-                {
-                    offset = geted;
-                    msgsize -= geted;
-                    q = true;
-                }
-                else q = false;
-            } while (q);
-            str = Encoding.ASCII.GetString(buf);
+            Send(requests.GetCl.ToString());
+            Send(i.ToString("D5"));
+            string str = Receive();
             if (str == "error")
             {
                 MessageBox.Show("Список пуст");
@@ -350,13 +285,35 @@ namespace WpfApplication3
         }
         void LoadCg()
         {
-            string str = requests.GetCg.ToString();
-            byte[] buf = Encoding.ASCII.GetBytes(str);
-            Socket.Send(buf);
-            buf = new byte[6];
-            Socket.Receive(new byte[1], 1, SocketFlags.None);
+            Send(requests.GetCg.ToString());
+            TranslatedRequests = Receive().Split(';');
+        }
+        public void SendCg()
+        {
+            string msg = "";
+            for (int i = 0; i < 7; i++)
+                msg += TranslatedRequests[i] + ";";
+            byte[] Buffer1 = Encoding.ASCII.GetBytes(requests.SetCg.ToString());
+            byte[] Buffer3 = Encoding.Unicode.GetBytes(msg);
+            byte[] Buffer2 = Encoding.ASCII.GetBytes(Buffer3.Length.ToString("D6"));
+            Socket.Send(Buffer1);
+            Socket.Send(new byte[] { 1 }, 1, SocketFlags.None);
+            Socket.Send(Buffer2);
+            Socket.Send(Buffer3);
+        }
+        void Send(string msg)
+        {
+            byte[] buf1 = Encoding.Unicode.GetBytes(msg);
+            msg = buf1.Length.ToString("D6");
+            byte[] buf2 = Encoding.ASCII.GetBytes(msg);
+            Socket.Send(buf2, 6, SocketFlags.None);
+            Socket.Send(buf1, buf1.Length, SocketFlags.None);
+        }
+        string Receive()
+        {
+            byte[] buf = new byte[6];
             Socket.Receive(buf, 6, SocketFlags.None);
-            int msgsize = int.Parse(Encoding.ASCII.GetString(buf, 0, 6));
+            int msgsize = int.Parse(Encoding.ASCII.GetString(buf));
             buf = new byte[msgsize];
             int offset = 0;
             bool q;
@@ -371,21 +328,7 @@ namespace WpfApplication3
                 }
                 else q = false;
             } while (q);
-            str = Encoding.Unicode.GetString(buf);
-            TranslatedRequests = str.Split(';');
-        }
-        public void SendCg()
-        {
-            string msg = "";
-            for (int i = 0; i < 7; i++)
-                msg += TranslatedRequests[i] + ";";
-            byte[] Buffer1 = Encoding.ASCII.GetBytes(requests.SetCg.ToString());
-            byte[] Buffer3 = Encoding.Unicode.GetBytes(msg);
-            byte[] Buffer2 = Encoding.ASCII.GetBytes(Buffer3.Length.ToString("D6"));
-            Socket.Send(Buffer1);
-            Socket.Send(new byte[] { 1 }, 1, SocketFlags.None);
-            Socket.Send(Buffer2);
-            Socket.Send(Buffer3);
+            return Encoding.Unicode.GetString(buf);
         }
         string TranslatingReq(string p)
         {

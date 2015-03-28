@@ -25,8 +25,7 @@ namespace App5
 
         string folderPath;
         string filePath;
-        IAsyncResult ar;
-        bool q = false; // переменная, надо ли проверять результат подключения
+        bool q; // переменная, надо ли проверять результат подключения
 
         AlertDialog.Builder dialog;
 
@@ -72,16 +71,17 @@ namespace App5
                 {
                     if (SCT.Socket.Connected)
                     {
-                        ShowMessage("Connection", "Соединение установлено", false);
+                        ShowMessage("Connection", "Соединение установлено", true);
                         StartActivity(typeof(DisplayingQueue));
                         this.Finish();
                         break;
                     }
                     else
                     {
-                        ShowMessage("Connection", "Не удалось установить соединение", false);
+                        ShowMessage("Connection", "Не удалось установить соединение", true);
+                        bconnect.Clickable = true;
+                        break;
                     }
-                    q = false;
                 }
             }
         }
@@ -132,25 +132,29 @@ namespace App5
                 sw.WriteLine(ip.ToString());
                 sw.WriteLine(port.ToString());
                 sw.Close();
+                q = false;
+                bconnect.Clickable = false;
                 SCT.Connecting();
                 timeout(15);
                 CheckConnectLoop();
             }
             catch
             {
-                ShowMessage("IpConfigError", String.Format("Данные введены некорректно"), false);
+                ShowMessage("IpConfigError", String.Format("Данные введены некорректно"), true);
             }
         }
-        void ShowMessage(string title, string message, bool exit)
+        void ShowMessage(string title, string message, bool cancelable)
         {
+            if (dialog != null)
+            {
+                dialog.Dispose();
+            }
             dialog = new AlertDialog.Builder(this);
             dialog.SetTitle(title);
             dialog.SetMessage(message);
-            dialog.SetPositiveButton("OK", delegate
-            {
-                if (exit)
-                    this.Finish();
-            });
+            dialog.SetCancelable(cancelable);
+
+            dialog.Create();
             dialog.Show();
         }
     }

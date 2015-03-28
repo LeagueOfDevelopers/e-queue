@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Diagnostics;
+using System.Data.SQLite;
 namespace Server
 {
     enum requests { prop1, prop2, prop3, prop4, prop5, prop6, EOSes, GetBD, GetHD, GetCl, SetCg, GetCg, enumErr}
@@ -29,7 +30,7 @@ namespace Server
         {
             int SizeOfBase = 999;//Размер базы(нумерация доходит до него - дальше 1)
             int SizeOfHistory = 10000;
-            Server.DataBase = new DataBase(SizeOfBase, SizeOfHistory);//инициализируем базу
+            DataBase = new DataBase(SizeOfBase, SizeOfHistory);//инициализируем базу
             Listener = new TcpListener(addr, port);//создаем слушатель, запускаем его
             Listener.Start();
             Console.WriteLine("Сервер запущен.\nАдрес: {0}", Listener.LocalEndpoint);
@@ -82,28 +83,22 @@ namespace Server
     {
         Socket Client;
         EndPoint EndPoint;
-        int CountOfBytes;//длина полученного сообщения
         byte[] Buffer;
         public AcceptedClient(Socket Cl)//работа с клиентом
         {
             Client = Cl;
             EndPoint = Client.RemoteEndPoint;
-            string Request;
-            CountOfBytes = 5;
             Buffer = new byte[1024];
             bool q = true;
-            while (q)
-            {
-                Client.Receive(Buffer, CountOfBytes,SocketFlags.None);
-                Request = Encoding.ASCII.GetString(Buffer, 0, CountOfBytes);
-                q = SwitchReq(Request);
-            }
+                while (q)
+                {
+                    q = SwitchReq(Receive());
+                }
             Client.Close();
             Console.WriteLine("Соединение с {0} завершено", EndPoint);
         }
         bool SwitchReq(string Request)
         {
-            string msg; byte[] tmp;
             if (Request.Length == 0)
                 return true;
             switch(Server.ParseReq(Request))
@@ -127,74 +122,56 @@ namespace Server
                     Server.DataBase.Add(Request);
                     break;
                 case requests.GetCl:
-                    Client.Receive(Buffer, CountOfBytes, SocketFlags.None);
-                    msg = Encoding.ASCII.GetString(Buffer, 0, CountOfBytes);
-                    try
-                    {
-                        msg = Server.DataBase.GetClient(int.Parse(msg)).ToString();
-                    }
-                    catch { msg = "error"; }
-                    tmp = Encoding.ASCII.GetBytes(msg);
-                    msg = tmp.Length.ToString("D6");
-                    byte[] Buffer2 = Encoding.ASCII.GetBytes(msg);
-                    Client.Send(new byte[] { 1 }, 1, SocketFlags.None);
-                    Client.Send(Buffer2, 6, SocketFlags.None);
-                    Client.Send(tmp, tmp.Length, SocketFlags.None);
+                    string msg = Server.DataBase.GetClient(int.Parse(Receive())).ToString();
+                    if (msg == "" )
+                        msg = "error";
+                    Send(msg);
                     break;
                 case requests.GetBD:
-                    msg = Server.DataBase.ToStringBase();
-                    tmp = Encoding.ASCII.GetBytes(msg);
-                    msg = tmp.Length.ToString("D6");
-                    Buffer2 = Encoding.ASCII.GetBytes(msg);
-                    Client.Send(new byte[] { 1 }, 1, SocketFlags.None);
-                    Client.Send(Buffer2, 6, SocketFlags.None);
-                    Client.Send(tmp, tmp.Length, SocketFlags.None);
+                    Send(Server.DataBase.ToStringBase());
                     break;
                 case requests.GetHD:
-                    msg = Server.DataBase.ToStringHistory();
-                    tmp = Encoding.ASCII.GetBytes(msg);
-                    msg = tmp.Length.ToString("D6");
-                    Buffer2 = Encoding.ASCII.GetBytes(msg);
-                    Client.Send(new byte[] { 1 }, 1, SocketFlags.None);
-                    Client.Send(Buffer2, 6, SocketFlags.None);
-                    Client.Send(tmp, tmp.Length, SocketFlags.None);
+                    Send(Server.DataBase.ToStringHistory());
                     break;
                 case requests.SetCg:
-                    byte[] buf = new byte[6];
-                    Client.Receive(new byte[1], 1, SocketFlags.None);
-                    Client.Receive(buf, 6, SocketFlags.None);
-                    string str = Encoding.ASCII.GetString(buf);
-                    int msgsize = int.Parse(str);
-                    Buffer = new byte[msgsize];
-                    int offset = 0;
-                    bool q;
-                    do
-                    {
-                        int geted = Client.Receive(Buffer, offset, msgsize, SocketFlags.None);
-                        if (geted != msgsize)
-                        {
-                            offset = geted;
-                            msgsize -= geted;
-                            q = true;
-                        }
-                        else q = false;
-                    } while (q);
-                    msg = Encoding.Unicode.GetString(Buffer);
-                    Server.DataBase.SetConfig(msg);
+                    Server.DataBase.SetConfig(Receive());
                     break;
                 case requests.GetCg:
-                    str = Server.DataBase.GetConfig();
-                    tmp = Encoding.Unicode.GetBytes(str);
-                    str = tmp.Length.ToString("D6");
-                    Buffer2 = Encoding.ASCII.GetBytes(str);
-                    Client.Send(new byte[] { 1 }, 1, SocketFlags.None);
-                    Client.Send(Buffer2, 6, SocketFlags.None);
-                    Client.Send(tmp, tmp.Length, SocketFlags.None);
+                    Send(Server.DataBase.GetConfig());
                     break;
                 case requests.EOSes:
                     return false;
             }
             return true;
+        }
+        void Send(string msg)
+        {
+            byte[] buf1 = Encoding.Unicode.GetBytes(msg);
+            msg = buf1.Length.ToString("D6");
+            byte[] buf2 = Encoding.ASCII.GetBytes(msg);
+            Client.Send(buf2, 6, SocketFlags.None);
+            Client.Send(buf1, buf1.Length, SocketFlags.None);
+        }
+        string Receive()
+        {
+            byte[] buf = new byte[6];
+            Client.Receive(buf, 6, SocketFlags.None);
+            int msgsize = int.Parse(Encoding.ASCII.GetString(buf));
+            buf = new byte[msgsize];
+            int offset = 0;
+            bool q;
+            do
+            {
+                int geted = Client.Receive(buf, offset, msgsize, SocketFlags.None);
+                if (geted != msgsize)
+                {
+                    offset = geted;
+                    msgsize -= geted;
+                    q = true;
+                }
+                else q = false;
+            } while (q);
+            return Encoding.Unicode.GetString(buf);
         }
     }
     class DataBase
@@ -391,7 +368,12 @@ namespace Server
         }
         public exitedClient GetClient(int i)
         {
-            exitedClient tmp = new exitedClient(Base[i].Number, Base[i].Purpose, Base[i].TimeOfEnter, DateTime.Now);
+            exitedClient tmp;
+            try
+            {
+                tmp=new exitedClient(Base[i].Number, Base[i].Purpose, Base[i].TimeOfEnter, DateTime.Now);
+            }
+            catch { return new exitedClient(); }
             Base.Remove(Base[i]);
             History.Add(tmp);
             File.SetAttributes(pathBase, FileAttributes.Normal);
@@ -563,7 +545,9 @@ namespace Server
         }
         public string ToString()
         {
-            return String.Format("{0,5:d}_{1,10:s}_{2}_{3}", Number, Purpose, TimeOfEnter, TimeOfOut);
+            if (Number == null)
+                return String.Format("{0,5:d}_{1,10:s}_{2}_{3}", Number, Purpose, TimeOfEnter, TimeOfOut);
+            else return "";
         }
     }
 }

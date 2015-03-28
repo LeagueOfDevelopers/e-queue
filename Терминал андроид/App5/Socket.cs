@@ -19,10 +19,6 @@ namespace App5
     {
         static IAsyncResult ar;
         static Socket sct;
-        public SCT()
-        {
-            sct = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        }
         public static IAsyncResult AR
         {
             get { return ar; }
@@ -40,6 +36,8 @@ namespace App5
         {
             try
             {
+                sct = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                ar = null;
                 sct.BeginConnect(IPEndPoint, new AsyncCallback(callback), sct);
             }
             catch 
