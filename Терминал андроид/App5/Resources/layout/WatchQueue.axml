@@ -54,58 +54,54 @@
             android:orientation="vertical"
             android:minWidth="25px"
             android:minHeight="25px"
-            android:layout_width="0dp"
+            android:layout_width="0px"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/linearLayout2">
+            android:layout_weight="2"
+            android:id="@+id/linearLayout5">
             <TextView
-                android:text="@string/основнаяОчередь"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView1"
-                android:gravity="center" />
-            <ListView
-                android:minWidth="25px"
-                android:minHeight="25px"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="20"
-                android:id="@+id/mainlist" />
+                android:layout_weight=" 1"
+                android:id="@+id/textView5" />
             <TextView
-                android:text="Всего: 0"
+                android:text="Всего в очереди: 25"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/counter1"
-                android:gravity="center" />
+                android:id="@+id/textInfo1"
+                android:gravity="center"
+                android:paddingBottom="10sp" />
+            <TextView
+                android:text="По длительным вопросам: 20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textInfo2"
+                android:gravity="center"
+                android:padding="10sp" />
+            <TextView
+                android:text="По коротким вопросам: 5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textInfo3"
+                android:gravity="center"
+                android:padding="10sp" />
+            <TextView
+                android:text="Среднее время приема: 5 мин"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textInfo4"
+                android:gravity="center"
+                android:padding="10sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=" 1"
+                android:id="@+id/textView7" />
         </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:minWidth="25px"
-            android:minHeight="25px"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/linearLayout3">
-            <TextView
-                android:text="@string/забрать_справку"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView2"
-                android:gravity="center" />
-            <ListView
-                android:minWidth="25px"
-                android:minHeight="25px"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1"
-                android:id="@+id/secondlist" />
-            <TextView
-                android:text="Всего: 0"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/counter2"
-                android:gravity="center" />
-        </LinearLayout>
+            android:id="@+id/textView4"
+            android:layout_weight="1" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"

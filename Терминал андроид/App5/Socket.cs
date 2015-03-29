@@ -49,5 +49,43 @@ namespace App5
         {
             ar = r;
         }
+
+        public static void Send(string msg)
+        {
+            try
+            {
+                byte[] buf1 = Encoding.Unicode.GetBytes(msg);
+                msg = buf1.Length.ToString("D6");
+                byte[] buf2 = Encoding.ASCII.GetBytes(msg);
+                sct.Send(buf2, 6, SocketFlags.None);
+                sct.Send(buf1, buf1.Length, SocketFlags.None);
+            }
+            catch { }
+        }
+        public static string Receive()
+        {
+            try
+            {
+                byte[] buf = new byte[6];
+                sct.Receive(buf, 6, SocketFlags.None);
+                int msgsize = int.Parse(Encoding.ASCII.GetString(buf));
+                buf = new byte[msgsize];
+                int offset = 0;
+                bool q;
+                do
+                {
+                    int geted = sct.Receive(buf, offset, msgsize, SocketFlags.None);
+                    if (geted != msgsize)
+                    {
+                        offset = geted;
+                        msgsize -= geted;
+                        q = true;
+                    }
+                    else q = false;
+                } while (q);
+                return Encoding.Unicode.GetString(buf);
+            }
+            catch { return " "; }
+        }
     }
 }

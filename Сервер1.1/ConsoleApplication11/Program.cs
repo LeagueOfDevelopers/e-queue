@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace Server
 {
-    enum requests { prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, prop9, SetCg, Refc1, Refc2, GetMa, GetMH, GetRe, GetRH, GetFa, GetFH, GetCM, GetCF, GetRF, GetCg, GetRN, Updat, EOSes, enumErr }
+    enum requests { prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, prop9, SetCg, Refc1, Refc2, GetMa, GetMH, GetRe, GetRH, GetFa, GetFH, GetCM, GetCF, GetRF, GetCg, GetRN, GetMT, Updat, EOSes, enumErr }
     class Start
     {
         static void Main(string[] args)
@@ -177,6 +177,9 @@ namespace Server
                 case requests.GetRN:
                     Send(Server.DataBase.GetRandomNumber().ToString());
                     break;
+                case requests.GetMT:
+                    Send(Server.DataBase.GetMiddleTime().ToString());
+                    break;
 
                 case requests.Updat:
                     Send(Server.DataBase.Update(int.Parse(Receive()), int.Parse(Receive())));
@@ -236,10 +239,6 @@ namespace Server
             LastNumber = 0;
             ConnectingToDB();
             LoadConfig();
-
-            AddRef(1154, "sdafasdfsjafhgjhsdgajkhgsadf", 1);
-            AddRef(1154, "sdafasdfsjafhgjhsdgajkhgsadf", 1);
-            GetReferenceOne(1154);
         }
 
         void ConnectingToDB()
@@ -489,6 +488,32 @@ namespace Server
         public string GetReferenceHist()
         {
             return GetTable("referencehist");
+        }
+        public int GetMiddleTime()
+        {
+            TimeSpan q = new TimeSpan(); int k = 0;
+            string[] b1 = GetMainHist().Split(';');
+            string[] b2 = GetFastHist().Split(';');
+            List<DateTime> b = new List<DateTime>();
+            try
+            {
+                for (int i = 0; i < 100; i = i + 2)
+                {
+                    b.Add(DateTime.Parse(b1[4]));
+                    b.Add(DateTime.Parse(b2[4]));
+                }
+            }
+            catch { }
+            b.Sort();
+            for (int i = b.Count - 1; i > 1; i--)
+            {
+                TimeSpan tmp = b[i] - b[i - 1];
+                if (tmp > TimeSpan.FromHours(1)||k>49)
+                    break;
+                q += tmp; k++;
+            }
+            q = TimeSpan.FromTicks(q.Ticks / 2);
+            return q.Minutes;
         }
 
         public void Add(int num ,string purp)

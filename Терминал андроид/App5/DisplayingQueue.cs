@@ -12,24 +12,25 @@ using Android.Widget;
 using System.Net.Sockets;
 using Android.Content.PM;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace App5
 {
     [Activity(Label = "DisplayingQueue", Icon = "@drawable/icon", Theme = "@android:style/Theme.Light.NoTitleBar.Fullscreen", ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.SensorLandscape)]
     public class DisplayingQueue : Activity
     {
-        Socket Socket;
         TextView watch;
-        TextView Counter1;
-        TextView Counter2;
         Button benter;
-        ListView MainList;
-        ListView SecondList;
-        public List<client> Base
-        {
-            get;
-            set;
-        }
+        TextView textInfo1;
+        TextView textInfo2;
+        TextView textInfo3;
+        TextView textInfo4;
+
+        int MainCount;
+        int FastCount;
+        int MiddleTime;
+        string[,] References;
+
         public string[] TranslatedRequests = new string[7];
 
         AlertDialog.Builder dialog;
@@ -39,40 +40,42 @@ namespace App5
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.WatchQueue);
 
-            Socket = SCT.Socket;
-            Base = new List<client>();
-
             watch = (TextView)FindViewById(Resource.Id.textClock);
             benter = (Button)FindViewById(Resource.Id.benter);
-            MainList = (ListView)FindViewById(Resource.Id.mainlist);
-            SecondList = (ListView)FindViewById(Resource.Id.secondlist);
-            Counter1 = (TextView)FindViewById(Resource.Id.counter1);
-            Counter2 = (TextView)FindViewById(Resource.Id.counter2);
+            textInfo1 = (TextView)FindViewById(Resource.Id.textInfo1);
+            textInfo2 = (TextView)FindViewById(Resource.Id.textInfo2);
+            textInfo3 = (TextView)FindViewById(Resource.Id.textInfo3);
+            textInfo4 = (TextView)FindViewById(Resource.Id.textInfo4);
+            MainCount = 0;
+            FastCount = 0;
+            MiddleTime = 0;
+            References = new string[1, 2];
         }
         protected override void OnResume()
         {
             Loop();
-            RefreshLoop();
+            new Thread(new ParameterizedThreadStart(RefreshLoop)).Start();
             base.OnResume();
         }
         async void Loop()
         {
             while (true)
             {
-                await Task.Delay(1000);
+                await Task.Delay(500);
                 watch.Text = "Время:\n" + DateTime.Now.ToString("HH:mm:ss");
+                UpdateInfo();
             }
         }
-        async void RefreshLoop()
+        void RefreshLoop(Object ob)
         {
             while (true)
             {
-                await Task.Delay(5000);
-                bool q = false;
                 try
                 {
-                    LoadCg();
-                    LoadBD();
+                    LoadMainCount();
+                    LoadFastCount();
+                    LoadTimeWait();
+                    LoadReferences();
                 }
                 catch (SocketException)
                 { 
@@ -87,74 +90,55 @@ namespace App5
                     dialog.Show();
                     break;
                 }
+                Thread.Sleep(5000);
             }
         }
-        void LoadCg()
+
+        private void UpdateInfo()
         {
-            string str = requests.GetCg.ToString();
-            byte[] buf = Encoding.ASCII.GetBytes(str);
-            Socket.Send(buf);
-            buf = new byte[6];
-            Socket.Receive(new byte[1], 1, SocketFlags.None);
-            Socket.Receive(buf, 6, SocketFlags.None);
-            int msgsize = int.Parse(Encoding.ASCII.GetString(buf, 0, 6));
-            buf = new byte[msgsize];
-            int offset = 0;
-            bool q;
-            do
-            {
-                int geted = Socket.Receive(buf, offset, msgsize, SocketFlags.None);
-                if (geted != msgsize)
-                {
-                    offset = geted;
-                    msgsize -= geted;
-                    q = true;
-                }
-                else q = false;
-            } while (q);
-            str = Encoding.Unicode.GetString(buf);
-            TranslatedRequests = str.Split(';');
+            textInfo1.Text = String.Format("Всего в очереди: {0:d}", MainCount+FastCount);
+            textInfo2.Text = String.Format("По длительным вопросам: {0:d}", MainCount);
+            textInfo3.Text = String.Format("По коротким вопросам: {0:d}", FastCount);
+            textInfo4.Text = String.Format("Среднее время приема: {0:d} мин", MiddleTime);
         }
-        void LoadBD()
+        private void LoadReferences()
         {
-            Base.Clear();
-            string str = requests.GetBD.ToString();
-            byte[] buf = Encoding.ASCII.GetBytes(str);
-            Socket.Send(buf);
-            buf = new byte[6];
-            Socket.Receive(new byte[1], 1, SocketFlags.None);
-            Socket.Receive(buf, 6, SocketFlags.None);
-            str = Encoding.ASCII.GetString(buf, 0, 6);
-            int msgsize = int.Parse(str);
-            buf = new byte[msgsize];
-            int offset = 0;
-            bool q;
-            do
+            SCT.Send(requests.GetRe.ToString());
+            string tmp1 = SCT.Receive();
+            string[] tmp2 = tmp1.Split(';');
+            if (tmp1 == " ")
+                References = new string[1, 2];
+            else
             {
-                int geted = Socket.Receive(buf, offset, msgsize, SocketFlags.None);
-                if (geted != msgsize)
+                References = new string[tmp1.Length, 2];
+                for (int i = 0; i < tmp2.Length; i++)
                 {
-                    offset = geted;
-                    msgsize -= geted;
-                    q = true;
+                    string[] tmp3 = tmp2[i].Split('_');
+                    References[i, 0] = tmp3[1];
+                    References[i, 1] = tmp3[5];
                 }
-                else q = false;
-            } while (q);
-            str = Encoding.ASCII.GetString(buf, 0, buf.Length);
-            string[] ClientBuf = str.Split(';');
-            for (int i = 0; i < ClientBuf.Length; i++)
-            {
-                try
-                {
-                    string[] buf2 = ClientBuf[i].Split('_');
-                    int n = int.Parse(buf2[0]);
-                    string p = TranslatingReq(buf2[1]);
-                    DateTime d = DateTime.Parse(buf2[2]);
-                    Base.Add(new client(n, p, d));
-                }
-                catch { }
             }
-            Counter1.Text = "Всего: " + Base.Count.ToString();
+        }
+        private void LoadTimeWait()
+        {
+            SCT.Send(requests.GetMT.ToString());
+            MiddleTime = int.Parse(SCT.Receive());
+        }
+        private void LoadFastCount()
+        {
+            SCT.Send(requests.GetFa.ToString());
+            string tmp = SCT.Receive();
+            if (tmp == " ")
+                FastCount = 0;
+            else MainCount = tmp.Split(';').Length;
+        }
+        private void LoadMainCount()
+        {
+            SCT.Send(requests.GetMa.ToString());
+            string tmp = SCT.Receive();
+            if (tmp == " ")
+                MainCount = 0;
+            else MainCount = tmp.Split(';').Length;
         }
         string TranslatingReq(string p)
         {
