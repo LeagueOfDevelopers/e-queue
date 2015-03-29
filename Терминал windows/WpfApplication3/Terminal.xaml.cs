@@ -21,7 +21,7 @@ namespace WpfApplication3
     /// <summary>
     /// Логика взаимодействия для Window1.xaml
     /// </summary>
-    enum requests { prop1, prop2, prop3, prop4, prop5, prop6, EOSes, GetBD, GetHD, GetCl, SetCg, GetCg, enumErr }
+    enum requests { prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, prop9, SetCg, Refc1, Refc2, GetMa, GetMH, GetRe, GetRH, GetFa, GetFH, GetCM, GetCF, GetCg, GetRN, Updat, EOSes, enumErr }
     public partial class Terminal : Window
     {
         Socket Client;
@@ -60,16 +60,8 @@ namespace WpfApplication3
         {
             try
             {
-                string str = requests.GetCg.ToString();
-                byte[] buf = Encoding.ASCII.GetBytes(str);
-                Client.Send(buf);
-                buf = new byte[6];
-                Client.Receive(new byte[1], 1, SocketFlags.None);
-                Client.Receive(buf, 6, SocketFlags.None);
-                int msgsize = int.Parse(Encoding.ASCII.GetString(buf, 0, 6));
-                buf = new byte[msgsize];
-                Client.Receive(buf, msgsize, SocketFlags.None);
-                str = Encoding.Unicode.GetString(buf);
+                Send(requests.GetCg.ToString());
+                string str = Receive();
                 if (str == " ")
                     return;
                 Update(str);
@@ -103,6 +95,8 @@ namespace WpfApplication3
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            Send(requests.GetRN.ToString());
+            int num = int.Parse(Receive());
             if (Client.Connected)
             {
                 string message = "";
@@ -131,8 +125,8 @@ namespace WpfApplication3
                     message = requests.prop6.ToString();
                 }
 
-                buffer = Encoding.ASCII.GetBytes(message);
-                Client.Send(buffer);
+                Send(message);
+                Send(num.ToString());
             }
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -145,10 +139,39 @@ namespace WpfApplication3
         public void EndingSession()
         {
             try{
-                Client.Send(buffer = Encoding.ASCII.GetBytes("EOSes"));
+                Send(requests.EOSes.ToString());
                 Client.Close();
             }
             catch {}
+        }
+        void Send(string msg)
+        {
+            byte[] buf1 = Encoding.Unicode.GetBytes(msg);
+            msg = buf1.Length.ToString("D6");
+            byte[] buf2 = Encoding.ASCII.GetBytes(msg);
+            Client.Send(buf2, 6, SocketFlags.None);
+            Client.Send(buf1, buf1.Length, SocketFlags.None);
+        }
+        string Receive()
+        {
+            byte[] buf = new byte[6];
+            Client.Receive(buf, 6, SocketFlags.None);
+            int msgsize = int.Parse(Encoding.ASCII.GetString(buf));
+            buf = new byte[msgsize];
+            int offset = 0;
+            bool q;
+            do
+            {
+                int geted = Client.Receive(buf, offset, msgsize, SocketFlags.None);
+                if (geted != msgsize)
+                {
+                    offset = geted;
+                    msgsize -= geted;
+                    q = true;
+                }
+                else q = false;
+            } while (q);
+            return Encoding.Unicode.GetString(buf);
         }
         requests ParseReq(string value)// Parse из string в request
         {
