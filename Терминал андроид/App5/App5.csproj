@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ListAdapter.cs" />
+    <Compile Include="Reference.cs" />
     <Compile Include="Socket.cs" />
     <Compile Include="DisplayingQueue.cs" />
     <Compile Include="MainActivity.cs" />
@@ -59,6 +61,9 @@
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\Welcome.axml" />
+    <AndroidResource Include="Resources\layout\item.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\WatchQueue.axml" />

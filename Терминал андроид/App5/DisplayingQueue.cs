@@ -25,11 +25,12 @@ namespace App5
         TextView textInfo2;
         TextView textInfo3;
         TextView textInfo4;
-
+        ListView listView1;
+        List<Reference> References;
+        ListAdapter adapter;
         int MainCount;
         int FastCount;
         int MiddleTime;
-        string[,] References;
 
         public string[] TranslatedRequests = new string[7];
 
@@ -46,14 +47,18 @@ namespace App5
             textInfo2 = (TextView)FindViewById(Resource.Id.textInfo2);
             textInfo3 = (TextView)FindViewById(Resource.Id.textInfo3);
             textInfo4 = (TextView)FindViewById(Resource.Id.textInfo4);
+            listView1 = (ListView)FindViewById(Resource.Id.listView1);
+            References = new List<Reference>();
+            adapter = new ListAdapter(this, References);
+            listView1.Adapter = adapter;
             MainCount = 0;
             FastCount = 0;
             MiddleTime = 0;
-            References = new string[1, 2];
         }
         protected override void OnResume()
         {
             Loop();
+            UpdatingRef();
             new Thread(new ParameterizedThreadStart(RefreshLoop)).Start();
             base.OnResume();
         }
@@ -61,39 +66,31 @@ namespace App5
         {
             while (true)
             {
-                await Task.Delay(500);
                 watch.Text = "Время:\n" + DateTime.Now.ToString("HH:mm:ss");
                 UpdateInfo();
+                await Task.Delay(500);
+            }
+        }
+        async void UpdatingRef()
+        {
+            while (true)
+            {
+                adapter = new ListAdapter(this, References);
+                listView1.Adapter = adapter;
+                await Task.Delay(15000);
             }
         }
         void RefreshLoop(Object ob)
         {
             while (true)
             {
-                try
-                {
-                    LoadMainCount();
-                    LoadFastCount();
-                    LoadTimeWait();
-                    LoadReferences();
-                }
-                catch (SocketException)
-                { 
-                    dialog = new AlertDialog.Builder(this);
-                    dialog.SetTitle("Connection");
-                    dialog.SetMessage("Соединение потеряно");
-                    dialog.SetPositiveButton("OK", delegate
-                    {
-                        StartActivity(typeof(MainActivity));
-                        this.Finish();
-                    });
-                    dialog.Show();
-                    break;
-                }
-                Thread.Sleep(5000);
+                LoadMainCount();
+                LoadFastCount();
+                LoadTimeWait();
+                LoadReferences();
+                Thread.Sleep(15000);
             }
         }
-
         private void UpdateInfo()
         {
             textInfo1.Text = String.Format("Всего в очереди: {0:d}", MainCount+FastCount);
@@ -106,17 +103,30 @@ namespace App5
             SCT.Send(requests.GetRe.ToString());
             string tmp1 = SCT.Receive();
             string[] tmp2 = tmp1.Split(';');
-            if (tmp1 == " ")
-                References = new string[1, 2];
-            else
+            bool q = true; ;
+            References.Clear();
+            for (int i = 0; i < tmp2.Length; i++)
             {
-                References = new string[tmp1.Length, 2];
-                for (int i = 0; i < tmp2.Length; i++)
+                try
                 {
                     string[] tmp3 = tmp2[i].Split('_');
-                    References[i, 0] = tmp3[1];
-                    References[i, 1] = tmp3[5];
+                    Reference r = new Reference();
+                    r.Number = tmp3[1];
+                    switch(tmp3[5])
+                    {
+                        case "1":
+                            r.Status = "Не готова";
+                            break;
+                        case "2":
+                            r.Status = "Недостаточно данных";
+                            break;
+                        case "3":
+                            r.Status = "Готова";
+                            break;
+                    }
+                    References.Add(r);
                 }
+                catch { }
             }
         }
         private void LoadTimeWait()
@@ -126,19 +136,13 @@ namespace App5
         }
         private void LoadFastCount()
         {
-            SCT.Send(requests.GetFa.ToString());
-            string tmp = SCT.Receive();
-            if (tmp == " ")
-                FastCount = 0;
-            else MainCount = tmp.Split(';').Length;
+            SCT.Send(requests.GetFC.ToString());
+            FastCount = int.Parse(SCT.Receive());
         }
         private void LoadMainCount()
         {
-            SCT.Send(requests.GetMa.ToString());
-            string tmp = SCT.Receive();
-            if (tmp == " ")
-                MainCount = 0;
-            else MainCount = tmp.Split(';').Length;
+            SCT.Send(requests.GetMC.ToString());
+            MainCount = int.Parse(SCT.Receive());
         }
         string TranslatingReq(string p)
         {
@@ -180,34 +184,5 @@ namespace App5
             });
             dialog.Show();
         }
-    }
-    public class client
-    {
-        int num;
-        string purpose;
-        DateTime timeOfEnter;
-        public client(int n, string p, DateTime E)
-        {
-            num = n;
-            purpose = p;
-            timeOfEnter = E;
-        }
-        public int Number
-        {
-            get { return num; }
-        }
-        public string Purpose
-        {
-            get { return purpose; }
-        }
-        public DateTime TimeOfEnter
-        {
-            get { return timeOfEnter; }
-        }
-        public string ToString()
-        {
-            return String.Format("{0,5:d}_{1,10:s}_{2}", Number, Purpose, TimeOfEnter);
-        }
-
     }
 }

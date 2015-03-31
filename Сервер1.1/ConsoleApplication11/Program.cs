@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace Server
 {
-    enum requests { prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, prop9, SetCg, Refc1, Refc2, GetMa, GetMH, GetRe, GetRH, GetFa, GetFH, GetCM, GetCF, GetRF, GetCg, GetRN, GetMT, Updat, EOSes, enumErr }
+    enum requests { prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, prop9, SetCg, Refc1, Refc2, GetMa, GetMH, GetRe, GetRH, GetFa, GetFH, GetCM, GetCF, GetRF, GetCg, GetRN, GetMT, GetMC, GetFC, GetRC, GeMHC, GeFHC, GeRHC, Updat, EOSes, enumErr }
     class Start
     {
         static void Main(string[] args)
@@ -29,7 +29,7 @@ namespace Server
         static public DataBase DataBase;
         public Server(IPAddress addr, int port)
         {
-            int SizeOfHistory = 10000;
+            int SizeOfHistory = 100000;
             DataBase = new DataBase(SizeOfHistory);//инициализируем базу
             Listener = new TcpListener(addr, port);//создаем слушатель, запускаем его
             Listener.Start();
@@ -97,7 +97,7 @@ namespace Server
                     q = SwitchReq(Receive());
                 }
             }
-            catch (Exception exc) { Console.WriteLine("Ошибка в соединении: " + exc.Message); }
+            catch{ Console.WriteLine("Ошибка в соединении."); }
             Client.Close();
             Console.WriteLine("Соединение с {0} завершено", EndPoint);
         }
@@ -180,6 +180,24 @@ namespace Server
                 case requests.GetMT:
                     Send(Server.DataBase.GetMiddleTime().ToString());
                     break;
+                case requests.GetMC:
+                    Send(Server.DataBase.GetCountMain().ToString());
+                    break;
+                case requests.GetFC:
+                    Send(Server.DataBase.GetCountFast().ToString());
+                    break;
+                case requests.GetRC:
+                    Send(Server.DataBase.GetCountReference().ToString());
+                    break;
+                case requests.GeMHC:
+                    Send(Server.DataBase.GetCountMainHist().ToString());
+                    break;
+                case requests.GeFHC:
+                    Send(Server.DataBase.GetCountFastHist().ToString());
+                    break;
+                case requests.GeRHC:
+                    Send(Server.DataBase.GetCountReferenceHist().ToString());
+                    break;
 
                 case requests.Updat:
                     Send(Server.DataBase.Update(int.Parse(Receive()), int.Parse(Receive())));
@@ -228,7 +246,6 @@ namespace Server
         string pathDB;
         string pathConfig;
         int SizeOfHistory;
-        int LastNumber;
 
         public DataBase(int s)
         {
@@ -236,7 +253,6 @@ namespace Server
             SizeOfHistory = s;
             pathDB = Environment.CurrentDirectory + "\\database.db";
             pathConfig = Environment.CurrentDirectory + "\\config.txt";
-            LastNumber = 0;
             ConnectingToDB();
             LoadConfig();
         }
@@ -314,20 +330,20 @@ namespace Server
                     cmd.CommandText = String.Format("INSERT INTO main(number, purpose, toenter) VALUES ({0:s});", value);
                     break;
                 case "mainhist":
-                    cmd.CommandText = String.Format("INSERT INTO mainhist(id, number, purpose, toenter, toexit) VALUES ({0:s});", value);
-                    break;
+                    InsertInDBhist("mainhist", value, "INSERT INTO {0:s}(id, number, purpose, toenter, toexit) VALUES ({1:s});");
+                    return;
                 case "reference":
                     cmd.CommandText = String.Format("INSERT INTO reference(number, purpose, toenter, priority, status) VALUES ({0:s});", value);
                     break;
                 case "referencehist":
-                    cmd.CommandText = String.Format("INSERT INTO referencehist(id, number, purpose, toenter, toexit, priority, status) VALUES ({0:s});", value);
-                    break;
+                    InsertInDBhist("referencehist", value, "INSERT INTO {0:s}(id, number, purpose, toenter, toexit, priority, status) VALUES ({1:s});");
+                    return;
                 case "fast":
                     cmd.CommandText = String.Format("INSERT INTO fast(number, purpose, toenter) VALUES ({0:s});", value);
                     break;
                 case "fasthist":
-                    cmd.CommandText = String.Format("INSERT INTO fasthist(id, number, purpose, toenter, toexit) VALUES ({0:s});", value);
-                    break;
+                    InsertInDBhist("fasthist", value, "INSERT INTO {0:s}(id, number, purpose, toenter, toexit) VALUES ({1:s});");
+                    return;
             }
             Connection.Open();
             try
@@ -339,6 +355,33 @@ namespace Server
                 Console.WriteLine(ex.Message);
             }
             Connection.Close();
+        }
+        void InsertInDBhist(string table, string value, string command)
+        {
+            try
+            {
+                int s = GetCount(table);
+                cmd = Connection.CreateCommand();
+
+                if (s > SizeOfHistory) 
+                {
+                    cmd.CommandText = String.Format("SELECT * FROM {0:s};", table); 
+                    Connection.Open();
+                    SQLiteDataReader r = cmd.ExecuteReader();
+                    r.Read();
+                    int num = int.Parse(r.GetValue(1).ToString());
+                    Connection.Close();
+                    RemoveFromDB(table, num);
+                }
+                cmd.CommandText = String.Format(command, table, value);
+                Connection.Open();
+                cmd.ExecuteNonQuery();
+                Connection.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
         void RemoveFromDB(string table, int number)
         {
@@ -409,7 +452,7 @@ namespace Server
             }
             Connection.Close();
             if (line != "")
-                line = line.Substring(0, line.Length - 2);
+                line = line.Substring(0, line.Length - 1);
             else line = " ";
             return line;
         }
@@ -489,6 +532,30 @@ namespace Server
         {
             return GetTable("referencehist");
         }
+        public int GetCountMain()
+        {
+            return GetCount("main");
+        }
+        public int GetCountFast()
+        {
+            return GetCount("fast");
+        }
+        public int GetCountReference()
+        {
+            return GetCount("reference");
+        }
+        public int GetCountMainHist()
+        {
+            return GetCount("mainhist");
+        }
+        public int GetCountFastHist()
+        {
+            return GetCount("fasthist");
+        }
+        public int GetCountReferenceHist()
+        {
+            return GetCount("referencehist");
+        }
         public int GetMiddleTime()
         {
             TimeSpan q = new TimeSpan(); int k = 0;
@@ -514,6 +581,18 @@ namespace Server
             }
             q = TimeSpan.FromTicks(q.Ticks / 2);
             return q.Minutes;
+        }
+        int GetCount(string table)
+        {
+            cmd = Connection.CreateCommand();
+            cmd.CommandText = String.Format("SELECT COUNT(1) FROM {0:s};", table);
+            Connection.Open();
+            SQLiteDataReader r = cmd.ExecuteReader();
+            r.Read();
+            int s = int.Parse(r.GetValue(0).ToString());
+            r.Close();
+            Connection.Close();
+            return s;
         }
 
         public void Add(int num ,string purp)

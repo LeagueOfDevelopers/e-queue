@@ -67,11 +67,13 @@ namespace App5
             try
             {
                 byte[] buf = new byte[6];
-                sct.Receive(buf, 6, SocketFlags.None);
-                int msgsize = int.Parse(Encoding.ASCII.GetString(buf));
-                buf = new byte[msgsize];
-                int offset = 0;
+                int msgsize;
+                int offset=0;
                 bool q;
+                sct.Receive(buf, 6, SocketFlags.None);
+                msgsize = int.Parse(Encoding.ASCII.GetString(buf));
+                buf = new byte[msgsize];
+                offset = 0;
                 do
                 {
                     int geted = sct.Receive(buf, offset, msgsize, SocketFlags.None);
@@ -80,6 +82,7 @@ namespace App5
                         offset = geted;
                         msgsize -= geted;
                         q = true;
+                        Thread.Sleep(5000);
                     }
                     else q = false;
                 } while (q);
