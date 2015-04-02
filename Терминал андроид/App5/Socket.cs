@@ -82,7 +82,7 @@ namespace App5
                         offset = geted;
                         msgsize -= geted;
                         q = true;
-                        Thread.Sleep(5000);
+                        Thread.Sleep(1000);
                     }
                     else q = false;
                 } while (q);

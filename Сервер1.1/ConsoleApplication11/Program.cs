@@ -94,54 +94,58 @@ namespace Server
             {
                 while (q)
                 {
-                    q = SwitchReq(Receive());
+                    string b;
+                    string a = Receive(out b);
+                    q = SwitchReq(a, b);
                 }
             }
             catch{ Console.WriteLine("Ошибка в соединении."); }
             Client.Close();
             Console.WriteLine("Соединение с {0} завершено", EndPoint);
         }
-        bool SwitchReq(string Request)
+        bool SwitchReq(string Request, string b)
         {
             if (Request.Length == 0)
                 return true;
+            Console.WriteLine(Request + "   " + DateTime.Now + "  " + b);
+            string a;
             switch (Server.ParseReq(Request))
             {
                 case requests.prop1:
-                    Server.DataBase.Add(int.Parse(Receive()), Request);
+                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.prop2:
-                    Server.DataBase.Add(int.Parse(Receive()), Request);
+                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.prop3:
-                    Server.DataBase.Add(int.Parse(Receive()), Request);
+                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.prop4:
-                    Server.DataBase.Add(int.Parse(Receive()), Request);
+                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.prop5:
-                    Server.DataBase.Add(int.Parse(Receive()), Request);
+                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.prop6:
-                    Server.DataBase.Add(int.Parse(Receive()), Request);
+                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.prop7:
-                    Server.DataBase.Add(int.Parse(Receive()), Request);
+                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.prop8:
-                    Server.DataBase.Add(int.Parse(Receive()), Request);
+                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.prop9:
-                    Server.DataBase.Add(int.Parse(Receive()), Request);
+                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.SetCg:
-                    Server.DataBase.Add(int.Parse(Receive()), Request);
+                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.Refc1:
-                    Server.DataBase.AddRef(int.Parse(Receive()), Receive(), 1);
+                    Server.DataBase.AddRef(int.Parse(Receive(out a)), Receive(out a), 1);
                     break;
                 case requests.Refc2:
-                    Server.DataBase.AddRef(int.Parse(Receive()), Receive(), 2);
+                    Server.DataBase.AddRef(int.Parse(Receive(out a)), Receive(out a), 2);
                     break;
 
                 case requests.GetMa:
@@ -163,13 +167,13 @@ namespace Server
                     Send(Server.DataBase.GetFastHist());
                     break;
                 case requests.GetCM:
-                    Send(Server.DataBase.GetClientMain(int.Parse(Receive())).ToString());
+                    Send(Server.DataBase.GetClientMain(int.Parse(Receive(out a))).ToString());
                     break;
                 case requests.GetCF:
-                    Send(Server.DataBase.GetClientFast(int.Parse(Receive())).ToString());
+                    Send(Server.DataBase.GetClientFast(int.Parse(Receive(out a))).ToString());
                     break;
                 case requests.GetRF:
-                    Send(Server.DataBase.GetReferenceOne(int.Parse(Receive())));
+                    Send(Server.DataBase.GetReferenceOne(int.Parse(Receive(out a))));
                     break;
                 case requests.GetCg:
                     Send(Server.DataBase.GetConfig());
@@ -200,7 +204,7 @@ namespace Server
                     break;
 
                 case requests.Updat:
-                    Send(Server.DataBase.Update(int.Parse(Receive()), int.Parse(Receive())));
+                    //Send(Server.DataBase.Update(int.Parse(Receive()), int.Parse(Receive())));
                     break;
 
                 case requests.EOSes:
@@ -216,7 +220,7 @@ namespace Server
             Client.Send(buf2, 6, SocketFlags.None);
             Client.Send(buf1, buf1.Length, SocketFlags.None);
         }
-        string Receive()
+        string Receive(out string a)
         {
             byte[] buf = new byte[6];
             Client.Receive(buf, 6, SocketFlags.None);
@@ -235,6 +239,7 @@ namespace Server
                 }
                 else q = false;
             } while (q);
+            a = Client.RemoteEndPoint.ToString();
             return Encoding.Unicode.GetString(buf);
         }
     }
@@ -249,7 +254,7 @@ namespace Server
 
         public DataBase(int s)
         {
-            config = new string[7];
+            config = new string[10];
             SizeOfHistory = s;
             pathDB = Environment.CurrentDirectory + "\\database.db";
             pathConfig = Environment.CurrentDirectory + "\\config.txt";
@@ -292,7 +297,7 @@ namespace Server
             try
             {
                 StreamReader sr = new StreamReader(pathConfig, Encoding.GetEncoding(1251));
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 10; i++)
                     config[i] = sr.ReadLine();
                 sr.Close();
                 File.SetAttributes(pathConfig, FileAttributes.ReadOnly);
@@ -304,7 +309,7 @@ namespace Server
             }
             catch
             {
-                config = new string[7];
+                config = new string[10];
                 try
                 {
                     StreamWriter swrt = new StreamWriter(pathConfig);
@@ -623,7 +628,7 @@ namespace Server
             string str = "";
             try
             {
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 10; i++)
                     str += config[i] + ";";
                 str = str.Substring(0, str.Length - 1);
             }

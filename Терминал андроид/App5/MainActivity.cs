@@ -15,7 +15,7 @@ using System.Threading;
 namespace App5
 {
     enum requests { prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, prop9, SetCg, Refc1, Refc2, GetMa, GetMH, GetRe, GetRH, GetFa, GetFH, GetCM, GetCF, GetRF, GetCg, GetRN, GetMT, GetMC, GetFC, GetRC, GeMHC, GeFHC, GeRHC, Updat, EOSes, enumErr }
-    [Activity(Label = "Enter", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Light.NoTitleBar.Fullscreen", ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.SensorLandscape)]
+    [Activity(Label = "EQueue", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Light.NoTitleBar.Fullscreen", ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.SensorLandscape)]
     public class MainActivity : Activity
     {
         TextView watch;
@@ -27,15 +27,15 @@ namespace App5
         string filePath;
         bool q; // переменная, надо ли проверять результат подключения
 
+        SCT temp = new SCT();
+        Data data = new Data(10);
+
         AlertDialog.Builder dialog;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Welcome);
-
-            SCT temp = new SCT();
-
             watch = (TextView)FindViewById(Resource.Id.textClock);
             iptxt = (EditText)FindViewById(Resource.Id.text_ip);
             porttxt = (EditText)FindViewById(Resource.Id.text_port);
@@ -45,13 +45,14 @@ namespace App5
             filePath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DataDirectory.ToString()) + "/Terminal/ipconfig";
 
             bconnect.Click += bconnect_Click;
-
-            checkConfig();
         }
         protected override void OnResume()
         {
-            Loop();
             base.OnResume();
+
+            checkConfig();
+            bconnect.Clickable = true;
+            Loop();
         }
         async void Loop()
         {
@@ -59,7 +60,6 @@ namespace App5
             {
                 await Task.Delay(500);
                 watch.Text = "Время:\n" + DateTime.Now.ToString("HH:mm:ss");
-                
             }
         }
         async void CheckConnectLoop()
@@ -71,14 +71,15 @@ namespace App5
                 {
                     if (SCT.Socket.Connected)
                     {
-                        ShowMessage("Connection", "Соединение установлено", true);
+                        ShowMessage("Connection", "Соединение установлено");
                         StartActivity(typeof(DisplayingQueue));
                         this.Finish();
                         break;
                     }
                     else
                     {
-                        ShowMessage("Connection", "Не удалось установить соединение", true);
+                        ShowMessage("Connection", "Не удалось установить соединение");
+                        SCT.Socket.Close();
                         bconnect.Clickable = true;
                         break;
                     }
@@ -121,7 +122,7 @@ namespace App5
         }
         void bconnect_Click(object sender, EventArgs e)
         {
-            ShowMessage("Connection", String.Format("Попытка подключения..."), false);
+            ShowMessage("Connection", String.Format("Попытка подключения..."));
             try
             {
                 IPAddress ip = IPAddress.Parse(iptxt.Text);
@@ -140,20 +141,14 @@ namespace App5
             }
             catch
             {
-                ShowMessage("IpConfigError", String.Format("Данные введены некорректно"), true);
+                ShowMessage("IpConfigError", String.Format("Данные введены некорректно"));
             }
         }
-        void ShowMessage(string title, string message, bool cancelable)
+        void ShowMessage(string title, string message)
         {
-            if (dialog != null)
-            {
-                dialog.Dispose();
-            }
             dialog = new AlertDialog.Builder(this);
             dialog.SetTitle(title);
             dialog.SetMessage(message);
-            dialog.SetCancelable(cancelable);
-
             dialog.Create();
             dialog.Show();
         }

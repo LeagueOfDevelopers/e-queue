@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#fff"
-    android:weightSum="100">
+    android:weightSum="100"
+    tools:actionBarNavMode="tabs">
     <LinearLayout
         android:orientation="horizontal"
         android:minWidth="25px"
@@ -36,12 +38,12 @@
             android:id="@+id/textClock" />
     </LinearLayout>
     <TextView
-        android:text="Подключение к серверу. Введите адрес и порт."
+        android:text="@string/txtLayout1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
         android:gravity="center"
-        android:textSize="10dp" />
+        android:textSize="15sp" />
     <LinearLayout
         android:orientation="horizontal"
         android:minWidth="25px"
@@ -135,7 +137,7 @@
             android:layout_weight="3"
             android:id="@+id/bConnect"
             android:background="@drawable/Button"
-            style="@style/button_text" />
+            style="@style/button_main" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

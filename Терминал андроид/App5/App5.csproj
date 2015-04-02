@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buttons.cs" />
+    <Compile Include="Data.cs" />
     <Compile Include="ListAdapter.cs" />
     <Compile Include="Reference.cs" />
     <Compile Include="Socket.cs" />
@@ -64,6 +66,7 @@
     <AndroidResource Include="Resources\layout\item.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\Buttons.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\WatchQueue.axml" />

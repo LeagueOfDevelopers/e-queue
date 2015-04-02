@@ -36,11 +36,11 @@
             android:id="@+id/textClock" />
     </LinearLayout>
     <TextView
-        android:text="@string/txtLayout1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
         android:gravity="center"
+        android:id="@+id/txtMessage"
         android:textSize="15sp" />
     <LinearLayout
         android:orientation="horizontal"
@@ -106,10 +106,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/linearLayout6"
-            android:paddingRight="45dp"
+            android:paddingRight="70dp"
             android:paddingTop="15dp"
             android:paddingBottom="25dp"
-            android:paddingLeft="70dp">
+            android:paddingLeft="95dp">
             <TextView
                 android:text="Готовые справки:"
                 android:layout_width="match_parent"
@@ -124,8 +124,7 @@
                 android:divider="@null"
                 android:layout_height="0px"
                 android:layout_weight="1"
-                android:layout_marginBottom="20dp"
-                android:paddingLeft="25dp" />
+                android:layout_marginBottom="20dp" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -148,7 +147,7 @@
             android:layout_weight="3"
             android:id="@+id/benter"
             android:background="@drawable/Button"
-            style="@style/button_text" />
+            style="@style/button_main" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
