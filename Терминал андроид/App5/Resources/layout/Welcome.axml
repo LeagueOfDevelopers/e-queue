@@ -108,7 +108,8 @@
                     android:layout_marginLeft="40px"
                     android:layout_weight="5"
                     android:id="@+id/text_port"
-                    android:paddingTop="20px" />
+                    android:paddingTop="20px"
+                    android:inputType="number" />
             </LinearLayout>
         </LinearLayout>
         <TextView

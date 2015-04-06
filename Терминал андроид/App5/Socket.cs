@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net.Sockets;
+using System.Net;
+using System.Threading;
 
 using Android.App;
 using Android.Content;
@@ -9,14 +12,12 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using System.Net.Sockets;
-using System.Net;
-using System.Threading;
 
 namespace App5
 {
     public class SCT
     {
+        static public bool SCTisFree { get; set; }
         static IAsyncResult ar;
         static Socket sct;
         public static IAsyncResult AR
@@ -39,6 +40,7 @@ namespace App5
                 sct = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 ar = null;
                 sct.BeginConnect(IPEndPoint, new AsyncCallback(callback), sct);
+                SCTisFree = true;
             }
             catch 
             {

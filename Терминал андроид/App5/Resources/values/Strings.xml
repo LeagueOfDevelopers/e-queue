@@ -7,6 +7,7 @@
 	<string name="txtLayout2">Система находится в режиме тестирования</string>
   <string name="txtLayout3">Выберите цель визита</string>
   <string name="txtLayout4">Заполните форму, для заказа справки</string>
+  <string name="txtLayout5">Введите номер студенческого билета, или получите случайный номер. Данный номер сообщите сотруднику на приеме.</string>
   <string name="enterQueue">Встать в очередь</string>
   <string name="Connect">Подключиться</string>
 	<string name="основнаяОчередь">Основная очередь:</string>

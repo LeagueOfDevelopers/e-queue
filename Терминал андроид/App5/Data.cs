@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Graphics;
 
 namespace App5
 {
@@ -29,5 +30,6 @@ namespace App5
             }
             catch { config = new string[Size]; }
         }
+        public static int button { get; set; }
     }
 }

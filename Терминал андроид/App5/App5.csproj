@@ -49,10 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InputingNumberFast.cs" />
+    <Compile Include="InputingNumberMain.cs" />
     <Compile Include="Buttons.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="ListAdapter.cs" />
     <Compile Include="Reference.cs" />
+    <Compile Include="QRCode.cs" />
     <Compile Include="Socket.cs" />
     <Compile Include="DisplayingQueue.cs" />
     <Compile Include="MainActivity.cs" />
@@ -60,6 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\Welcome.axml" />
@@ -67,6 +71,13 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Buttons.axml" />
+    <AndroidResource Include="Resources\layout\InputingNumberMain.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\InputingNumberFast.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\QRCode.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\WatchQueue.axml" />

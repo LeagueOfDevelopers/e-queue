@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
+using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -603,7 +604,7 @@ namespace Server
         public void Add(int num ,string purp)
         {
             string values ;
-            if (int.Parse(purp.Substring(4)) <= 6)
+            if (int.Parse(purp.Substring(4)) >3)
             {
                 values = String.Format("{0:d}, '{1:s}', '{2:s}'", num, purp, DateTime.Now.ToString());
                 InsertInDB("main", values);

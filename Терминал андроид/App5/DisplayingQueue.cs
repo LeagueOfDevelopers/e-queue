@@ -111,12 +111,17 @@ namespace App5
         {
             while (true)
             {
-                LoadConfig();
-                LoadMainCount();
-                LoadFastCount();
-                LoadTimeWait();
-                LoadReferences();
-                Thread.Sleep(15000);
+                if (SCT.SCTisFree)
+                {
+                    SCT.SCTisFree = false;
+                    LoadConfig();
+                    LoadMainCount();
+                    LoadFastCount();
+                    LoadTimeWait();
+                    LoadReferences();
+                    SCT.SCTisFree = true;
+                    Thread.Sleep(15000);
+                }
             }
         }
 

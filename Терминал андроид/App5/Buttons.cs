@@ -81,22 +81,49 @@ namespace App5
             switch((int)a.Tag)
             {
                 case 1:
+                    Data.button = (int)a.Tag;
+                    StartActivity(typeof(InputingNumberFast));
+                    this.Finish();
                     break;
                 case 2:
+                    Data.button = (int)a.Tag;
+                    StartActivity(typeof(InputingNumberFast));
+                    this.Finish();
                     break;
                 case 3:
+                    Data.button = (int)a.Tag;
+                    StartActivity(typeof(InputingNumberFast));
+                    this.Finish();
                     break;
                 case 4:
+                    Data.button = (int)a.Tag;
+                    StartActivity(typeof(InputingNumberMain));
+                    this.Finish();
                     break;
                 case 5:
+                    Data.button = (int)a.Tag;
+                    StartActivity(typeof(InputingNumberMain));
+                    this.Finish();
                     break;
                 case 6:
+                    Data.button = (int)a.Tag;
+                    StartActivity(typeof(InputingNumberMain));
+                    this.Finish();
                     break;
                 case 7:
+                    Data.button = (int)a.Tag;
+                    StartActivity(typeof(InputingNumberMain));
+                    this.Finish();
                     break;
                 case 8:
+                    Data.button = (int)a.Tag;
+                    StartActivity(typeof(InputingNumberMain));
+                    this.Finish();
                     break;
                 case 9:
+                    Data.button = (int)a.Tag;
+                    StartActivity(typeof(InputingNumberMain));
+                    this.Finish();
                     break;
                 case 0:
                     this.Finish();
