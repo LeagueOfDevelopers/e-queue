@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace App5
 {
-    class Reference
+    class ReferenceOne
     {
         public string Number { get; set; }
         public string Status { get; set; }

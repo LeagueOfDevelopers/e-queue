@@ -64,6 +64,8 @@ namespace App5
             switch((int)a.Tag)
             {
                 case 2:
+                    if (number.Text.Length != 6)
+                        ShowMessage("Ошибка", "Номер студенческого билета состоит из 6 цифр.", false);
                     new Thread(new ParameterizedThreadStart(SendPurpose)).Start();
                     break;
                 case 0:
@@ -82,6 +84,7 @@ namespace App5
                         SCT.SCTisFree = false;
                         SCT.Send("prop" + Data.button);
                         SCT.Send(number.Text);
+                        Data.number = number.Text;
                         StartActivity(typeof(QRCodeDisplaying));
                         SCT.SCTisFree = true;
                         this.Finish();

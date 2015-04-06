@@ -28,7 +28,7 @@ namespace App5
         TextView textInfo4;
         TextView textMessage;
         ListView listView1;
-        List<Reference> References;
+        List<ReferenceOne> References;
         ListAdapter adapter;
         int MainCount;
         int FastCount;
@@ -54,7 +54,7 @@ namespace App5
             listView1 = (ListView)FindViewById(Resource.Id.listView1);
             RefLoop = new Thread(new ParameterizedThreadStart(RefreshLoop));
             RefLoop.Start();
-            References = new List<Reference>();
+            References = new List<ReferenceOne>();
             adapter = new ListAdapter(this, References);
             listView1.Adapter = adapter;
             benter.Click += button_Click;
@@ -149,7 +149,7 @@ namespace App5
                 try
                 {
                     string[] tmp3 = tmp2[i].Split('_');
-                    Reference r = new Reference();
+                    ReferenceOne r = new ReferenceOne();
                     r.Number = tmp3[1];
                     switch(tmp3[5])
                     {

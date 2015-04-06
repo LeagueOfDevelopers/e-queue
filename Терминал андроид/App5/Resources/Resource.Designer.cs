@@ -96,11 +96,11 @@ namespace App5
 			// aapt resource value: 0x7f06000b
 			public const int b9 = 2131099659;
 			
-			// aapt resource value: 0x7f06002a
-			public const int bConnect = 2131099690;
+			// aapt resource value: 0x7f060030
+			public const int bConnect = 2131099696;
 			
-			// aapt resource value: 0x7f060027
-			public const int benter = 2131099687;
+			// aapt resource value: 0x7f06002d
+			public const int benter = 2131099693;
 			
 			// aapt resource value: 0x7f060017
 			public const int bentque = 2131099671;
@@ -116,6 +116,9 @@ namespace App5
 			
 			// aapt resource value: 0x7f06001a
 			public const int bgetnum = 2131099674;
+			
+			// aapt resource value: 0x7f060027
+			public const int bsend = 2131099687;
 			
 			// aapt resource value: 0x7f06001f
 			public const int imageqrcode = 2131099679;
@@ -138,23 +141,38 @@ namespace App5
 			// aapt resource value: 0x7f060016
 			public const int linearLayout7 = 2131099670;
 			
+			// aapt resource value: 0x7f06002c
+			public const int listView1 = 2131099692;
+			
+			// aapt resource value: 0x7f060022
+			public const int t1 = 2131099682;
+			
+			// aapt resource value: 0x7f060023
+			public const int t2 = 2131099683;
+			
+			// aapt resource value: 0x7f060024
+			public const int t3 = 2131099684;
+			
+			// aapt resource value: 0x7f060025
+			public const int t4 = 2131099685;
+			
 			// aapt resource value: 0x7f060026
-			public const int listView1 = 2131099686;
+			public const int t5 = 2131099686;
 			
 			// aapt resource value: 0x7f060000
 			public const int textClock = 2131099648;
 			
-			// aapt resource value: 0x7f060022
-			public const int textInfo1 = 2131099682;
+			// aapt resource value: 0x7f060028
+			public const int textInfo1 = 2131099688;
 			
-			// aapt resource value: 0x7f060023
-			public const int textInfo2 = 2131099683;
+			// aapt resource value: 0x7f060029
+			public const int textInfo2 = 2131099689;
 			
-			// aapt resource value: 0x7f060024
-			public const int textInfo3 = 2131099684;
+			// aapt resource value: 0x7f06002a
+			public const int textInfo3 = 2131099690;
 			
-			// aapt resource value: 0x7f060025
-			public const int textInfo4 = 2131099685;
+			// aapt resource value: 0x7f06002b
+			public const int textInfo4 = 2131099691;
 			
 			// aapt resource value: 0x7f06001b
 			public const int textView1 = 2131099675;
@@ -186,14 +204,14 @@ namespace App5
 			// aapt resource value: 0x7f06001d
 			public const int textView9 = 2131099677;
 			
-			// aapt resource value: 0x7f060028
-			public const int text_ip = 2131099688;
+			// aapt resource value: 0x7f06002e
+			public const int text_ip = 2131099694;
 			
 			// aapt resource value: 0x7f060015
 			public const int text_number = 2131099669;
 			
-			// aapt resource value: 0x7f060029
-			public const int text_port = 2131099689;
+			// aapt resource value: 0x7f06002f
+			public const int text_port = 2131099695;
 			
 			// aapt resource value: 0x7f060010
 			public const int txtMessage = 2131099664;
@@ -227,10 +245,16 @@ namespace App5
 			public const int QRCode = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int WatchQueue = 2130903045;
+			public const int QRCodeRef = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int Welcome = 2130903046;
+			public const int Reference = 2130903046;
+			
+			// aapt resource value: 0x7f030007
+			public const int WatchQueue = 2130903047;
+			
+			// aapt resource value: 0x7f030008
+			public const int Welcome = 2130903048;
 			
 			static Layout()
 			{

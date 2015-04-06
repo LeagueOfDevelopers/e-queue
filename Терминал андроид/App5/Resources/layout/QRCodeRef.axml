@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#fff"
+    android:weightSum="100">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_weight="20"
+        android:layout_width="match_parent"
+        android:layout_height="0px">
+        <ImageView
+            android:src="@drawable/logo"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="10dp" />
+        <TextView
+            android:text="Добро пожаловать в студенческий отдел кадров!"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            android:gravity="center" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            android:gravity="center"
+            android:id="@+id/textClock" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:gravity="center"
+        android:id="@+id/txtMessage"
+        android:textSize="15sp"
+        android:text="Ваша заявка принята. Узнайте о готовности справки на сайте, либо на информационном табло терминала"
+        android:paddingLeft="100dp"
+        android:paddingRight="100dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="25px"
+        android:layout_weight="60"
+        android:id="@+id/linearLayout1">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/textView5"
+            android:layout_weight="1" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayout5"
+            android:layout_weight="3"
+            android:minWidth="25px"
+            android:minHeight="25px">
+            <TextView
+                android:text="Ваш номер:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/textView9"
+                android:gravity="center" />
+            <TextView
+                android:text="1965"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/textView8"
+                android:gravity="center"
+                android:textSize="25sp" />
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageqrcode" />
+            <TextView
+                android:text="Подробную информацию узнайте на сайте studok.misis.ru"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/textView10"
+                android:gravity="center" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/textView6"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/linearLayout4"
+        android:layout_weight="10">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/textView3"
+            android:layout_weight="1" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:id="@+id/bexit3"
+            android:background="@drawable/Button"
+            style="@style/button_main"
+            android:text="Вернуться назад" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/textView4"
+            android:layout_weight="1" />
+    </LinearLayout>
+</LinearLayout>

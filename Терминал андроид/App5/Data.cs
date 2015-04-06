@@ -31,5 +31,6 @@ namespace App5
             catch { config = new string[Size]; }
         }
         public static int button { get; set; }
+        public static string number { get; set; }
     }
 }

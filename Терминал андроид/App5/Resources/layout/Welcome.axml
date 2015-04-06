@@ -53,7 +53,7 @@
         android:layout_weight="60"
         android:id="@+id/linearLayout1">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/textView3"
             android:layout_weight="2" />
@@ -61,7 +61,7 @@
             android:orientation="vertical"
             android:minWidth="25px"
             android:minHeight="25px"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:id="@+id/linearLayout5">
@@ -71,7 +71,7 @@
                 android:orientation="horizontal"
                 android:paddingTop="20px">
                 <TextView
-                    android:layout_width="0px"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10px"
                     android:paddingTop="20px"
@@ -93,7 +93,7 @@
                 android:orientation="horizontal"
                 android:paddingTop="20px">
                 <TextView
-                    android:layout_width="0px"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Port"
                     android:paddingTop="20px"
@@ -113,7 +113,7 @@
             </LinearLayout>
         </LinearLayout>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/textView4"
             android:layout_weight="2" />
@@ -127,20 +127,20 @@
         android:id="@+id/linearLayout4"
         android:layout_weight="10">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/textView3"
             android:layout_weight="1" />
         <Button
             android:text="@string/Connect"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:id="@+id/bConnect"
             android:background="@drawable/Button"
             style="@style/button_main" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/textView4"
             android:layout_weight="1" />

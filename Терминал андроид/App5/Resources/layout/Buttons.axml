@@ -51,11 +51,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="60"
-        android:id="@+id/linearLayout1">
+        android:id="@+id/linearLayout1"
+        android:paddingBottom="7dp">
         <LinearLayout
             android:orientation="horizontal"
-            android:minWidth="25px"
-            android:minHeight="25px"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -87,8 +88,8 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
-            android:minWidth="25px"
-            android:minHeight="25px"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -120,8 +121,8 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
-            android:minWidth="25px"
-            android:minHeight="25px"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -159,23 +160,22 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/linearLayout4"
-        android:layout_weight="10"
-        android:layout_marginTop="7dp">
+        android:layout_weight="10">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/textView3"
             android:layout_weight="1" />
         <Button
             android:text="Вернуться назад"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:id="@+id/bexit"
             android:background="@drawable/Button"
             style="@style/button_main" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/textView4"
             android:layout_weight="1" />

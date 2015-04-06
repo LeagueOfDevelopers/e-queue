@@ -33,6 +33,7 @@ namespace App5
 
             watch = (TextView)FindViewById(Resource.Id.textClock);
             number = (TextView)FindViewById(Resource.Id.textView8);
+            number.Text = Data.number;
             qrcode = (ImageView)FindViewById(Resource.Id.imageqrcode);
             bexit = (Button)FindViewById(Resource.Id.bexit3);bexit.Click+=bexit_Click;
             q = true;

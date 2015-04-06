@@ -92,7 +92,7 @@ namespace App5
                     break;
                 case 3:
                     Data.button = (int)a.Tag;
-                    StartActivity(typeof(InputingNumberFast));
+                    StartActivity(typeof(ReferenceForm));
                     this.Finish();
                     break;
                 case 4:

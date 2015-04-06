@@ -54,6 +54,8 @@
     <Compile Include="Buttons.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="ListAdapter.cs" />
+    <Compile Include="QRCodeRef.cs" />
+    <Compile Include="Reference_form.cs" />
     <Compile Include="Reference.cs" />
     <Compile Include="QRCode.cs" />
     <Compile Include="Socket.cs" />
@@ -78,6 +80,8 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\QRCode.axml" />
+    <AndroidResource Include="Resources\layout\Reference.axml" />
+    <AndroidResource Include="Resources\layout\QRCodeRef.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\WatchQueue.axml" />

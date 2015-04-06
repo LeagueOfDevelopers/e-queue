@@ -13,12 +13,12 @@ using System.Threading;
 
 namespace App5
 {
-    class ListAdapter: BaseAdapter<Reference>
+    class ListAdapter: BaseAdapter<ReferenceOne>
     {
-        public List<Reference> Items { get; set; }
+        public List<ReferenceOne> Items { get; set; }
         Context mContext;
 
-        public ListAdapter(Context cont, List<Reference> items)
+        public ListAdapter(Context cont, List<ReferenceOne> items)
         {
             Items = items;
             mContext = cont;
@@ -32,7 +32,7 @@ namespace App5
         {
             return position;
         }
-        public override Reference this[int position]
+        public override ReferenceOne this[int position]
         {
             get { return Items[position]; }
         }
