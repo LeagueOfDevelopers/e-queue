@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/mainlayout"
+    android:background="#fff"
+    android:weightSum="100">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_weight="20"
+        android:layout_width="match_parent"
+        android:layout_height="0px">
+        <ImageView
+            android:src="@drawable/logo"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="10dp" />
+        <TextView
+            android:text="Добро пожаловать в студенческий отдел кадров!"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            android:gravity="center" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            android:gravity="center"
+            android:id="@+id/textClock" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:gravity="center"
+        android:id="@+id/txtMessage"
+        android:textSize="15sp"
+        android:text="Заполните все поля, чтобы получить справку."
+        android:paddingLeft="100dp"
+        android:paddingRight="100dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="60"
+        android:id="@+id/linearLayout1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView5"
+            android:layout_weight="1" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayout5"
+            android:layout_weight="3">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/linearLayout6"
+                android:layout_weight="1">
+                <TextView
+                    android:text="Номер студенческого билета:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView7"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+                <EditText
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:id="@+id/t1"
+                    android:inputType="number"
+                    android:textSize="15sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/linearLayout6"
+                android:layout_weight="1">
+                <TextView
+                    android:text="ФИО (полностью, в И.П.)"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView7"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+                <EditText
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:id="@+id/t2"
+                    android:inputType="text"
+                    android:textSize="15sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/linearLayout6"
+                android:layout_weight="1">
+                <TextView
+                    android:text="Дата рождения:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView7"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+                <EditText
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:id="@+id/t3"
+                    android:inputType="date"
+                    android:textSize="15sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/linearLayout6"
+                android:layout_weight="1">
+                <TextView
+                    android:text="Направление справки:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView7"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+                <EditText
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:id="@+id/t4"
+                    android:inputType="text"
+                    android:textSize="15sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/linearLayout6"
+                android:layout_weight="1">
+                <TextView
+                    android:text="Дополнительная информация:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView7"
+                    android:gravity="center"
+                    android:textSize="15sp" />
+                <EditText
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:id="@+id/t5"
+                    android:inputType="textLongMessage"
+                    android:textSize="15sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/linearLayout6"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_weight="1">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:id="@+id/bsend"
+                    android:background="@drawable/Button"
+                    style="@style/button_main"
+                    android:text="Отправить заявку" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView6"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:id="@+id/linearLayout4"
+        android:layout_weight="10"
+        android:layout_height="0px">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/textView3"
+            android:layout_weight="1" />
+        <Button
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:id="@+id/bexit3"
+            android:background="@drawable/Button"
+            style="@style/button_main"
+            android:text="Вернуться назад" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/textView4"
+            android:layout_weight="1" />
+    </LinearLayout>
+</LinearLayout>

@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace Server
 {
-    enum requests { prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, prop9, SetCg, Refc1, Refc2, GetMa, GetMH, GetRe, GetRH, GetFa, GetFH, GetCM, GetCF, GetRF, GetCg, GetRN, GetMT, GetMC, GetFC, GetRC, GeMHC, GeFHC, GeRHC, Updat, EOSes, enumErr }
+    enum requests { prop1, prop2, prop3, prop4, prop5, prop6, prop7, prop8, prop9, SetCg, Refc1, Refc2, GetMa, GetMH, GetRe, GetRH, GetFa, GetFH, GetCM, GetCF, GetRF, GetCg, GetRN, GetMT, GetMC, GetFC, GetRC, GeMHC, GeFHC, GeRHC, GetNu, Updat, EOSes, enumErr }
     class Start
     {
         static void Main(string[] args)
@@ -41,6 +41,7 @@ namespace Server
             while (true)
             {
                 Socket Client = Listener.AcceptSocket();//ожидание подключенного пользователя
+                Client.ReceiveTimeout = 60000;
                 Console.WriteLine("Установленно соединение с {0}", Client.RemoteEndPoint);
                 Thread Thread2 = new Thread(new ParameterizedThreadStart(ClientThread));//создание и запуск нового потока, передаем ему полученного клиента
                 Thread2.Start(Client);
@@ -91,16 +92,22 @@ namespace Server
             EndPoint = Client.RemoteEndPoint;
             Buffer = new byte[1024];
             bool q = true;
-            try
+            string str;
+            if (Passwords.checkPass(Receive(out str)))
             {
-                while (q)
+                Console.WriteLine("Устройство авторизовано");
+                try
                 {
-                    string b;
-                    string a = Receive(out b);
-                    q = SwitchReq(a, b);
+                    while (q)
+                    {
+                        string b;
+                        string a = Receive(out b);
+                        q = SwitchReq(a, b);
+                    }
                 }
+                catch { Console.WriteLine("Ошибка в соединении."); }
             }
-            catch{ Console.WriteLine("Ошибка в соединении."); }
+            else Console.WriteLine("Устройство не авторизовано");
             Client.Close();
             Console.WriteLine("Соединение с {0} завершено", EndPoint);
         }
@@ -113,40 +120,40 @@ namespace Server
             switch (Server.ParseReq(Request))
             {
                 case requests.prop1:
-                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
+                    Send(Server.DataBase.Add(int.Parse(Receive(out a)), Request).ToString());
                     break;
                 case requests.prop2:
-                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
+                    Send(Server.DataBase.Add(int.Parse(Receive(out a)), Request).ToString());
                     break;
                 case requests.prop3:
-                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
+                    Send(Server.DataBase.Add(int.Parse(Receive(out a)), Request).ToString());
                     break;
                 case requests.prop4:
-                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
+                    Send(Server.DataBase.Add(int.Parse(Receive(out a)), Request).ToString());
                     break;
                 case requests.prop5:
-                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
+                    Send(Server.DataBase.Add(int.Parse(Receive(out a)), Request).ToString());
                     break;
                 case requests.prop6:
-                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
+                    Send(Server.DataBase.Add(int.Parse(Receive(out a)), Request).ToString());
                     break;
                 case requests.prop7:
-                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
+                    Send(Server.DataBase.Add(int.Parse(Receive(out a)), Request).ToString());
                     break;
                 case requests.prop8:
-                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
+                    Send(Server.DataBase.Add(int.Parse(Receive(out a)), Request).ToString());
                     break;
                 case requests.prop9:
-                    Server.DataBase.Add(int.Parse(Receive(out a)), Request);
+                    Send(Server.DataBase.Add(int.Parse(Receive(out a)), Request).ToString());
                     break;
                 case requests.SetCg:
                     Server.DataBase.Add(int.Parse(Receive(out a)), Request);
                     break;
                 case requests.Refc1:
-                    Server.DataBase.AddRef(int.Parse(Receive(out a)), Receive(out a), 1);
+                    Send(Server.DataBase.AddRef(int.Parse(Receive(out a)), Receive(out a), 1).ToString());
                     break;
                 case requests.Refc2:
-                    Server.DataBase.AddRef(int.Parse(Receive(out a)), Receive(out a), 2);
+                    Send(Server.DataBase.AddRef(int.Parse(Receive(out a)), Receive(out a), 1).ToString());
                     break;
 
                 case requests.GetMa:
@@ -203,6 +210,9 @@ namespace Server
                 case requests.GeRHC:
                     Send(Server.DataBase.GetCountReferenceHist().ToString());
                     break;
+                case requests.GetNu:
+                    Send(Server.DataBase.GetNumber().ToString());
+                    break;
 
                 case requests.Updat:
                     //Send(Server.DataBase.Update(int.Parse(Receive()), int.Parse(Receive())));
@@ -252,6 +262,7 @@ namespace Server
         string pathDB;
         string pathConfig;
         int SizeOfHistory;
+        int Number;//номер, принимаемый в данный момент
 
         public DataBase(int s)
         {
@@ -261,6 +272,7 @@ namespace Server
             pathConfig = Environment.CurrentDirectory + "\\config.txt";
             ConnectingToDB();
             LoadConfig();
+            Number = 0;
         }
 
         void ConnectingToDB()
@@ -327,7 +339,7 @@ namespace Server
             }
         }
         
-        void InsertInDB(string table, string value)
+        bool InsertInDB(string table, string value)
         {
             cmd = Connection.CreateCommand();
             switch (table)
@@ -336,21 +348,19 @@ namespace Server
                     cmd.CommandText = String.Format("INSERT INTO main(number, purpose, toenter) VALUES ({0:s});", value);
                     break;
                 case "mainhist":
-                    InsertInDBhist("mainhist", value, "INSERT INTO {0:s}(id, number, purpose, toenter, toexit) VALUES ({1:s});");
-                    return;
+                    return InsertInDBhist("mainhist", value, "INSERT INTO {0:s}(id, number, purpose, toenter, toexit) VALUES ({1:s});");
                 case "reference":
                     cmd.CommandText = String.Format("INSERT INTO reference(number, purpose, toenter, priority, status) VALUES ({0:s});", value);
                     break;
                 case "referencehist":
-                    InsertInDBhist("referencehist", value, "INSERT INTO {0:s}(id, number, purpose, toenter, toexit, priority, status) VALUES ({1:s});");
-                    return;
+                    return InsertInDBhist("referencehist", value, "INSERT INTO {0:s}(id, number, purpose, toenter, toexit, priority, status) VALUES ({1:s});");
                 case "fast":
                     cmd.CommandText = String.Format("INSERT INTO fast(number, purpose, toenter) VALUES ({0:s});", value);
                     break;
                 case "fasthist":
-                    InsertInDBhist("fasthist", value, "INSERT INTO {0:s}(id, number, purpose, toenter, toexit) VALUES ({1:s});");
-                    return;
+                    return InsertInDBhist("fasthist", value, "INSERT INTO {0:s}(id, number, purpose, toenter, toexit) VALUES ({1:s});");
             }
+            var q = true;
             Connection.Open();
             try
             {
@@ -359,10 +369,12 @@ namespace Server
             catch (SQLiteException ex)
             {
                 Console.WriteLine(ex.Message);
+                q = false;
             }
             Connection.Close();
+            return q;
         }
-        void InsertInDBhist(string table, string value, string command)
+        bool InsertInDBhist(string table, string value, string command)
         {
             try
             {
@@ -383,10 +395,12 @@ namespace Server
                 Connection.Open();
                 cmd.ExecuteNonQuery();
                 Connection.Close();
+                return true;
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine(ex.Message);
+                return false;
             }
         }
         void RemoveFromDB(string table, int number)
@@ -514,6 +528,10 @@ namespace Server
             }
             return num;
         }
+        public int GetNumber()
+        {
+            return Number;
+        }
         public string GetMain()
         {
             return GetTable("main");
@@ -601,27 +619,28 @@ namespace Server
             return s;
         }
 
-        public void Add(int num ,string purp)
+        public bool Add(int num ,string purp)
         {
-            string values ;
+            string values;
             if (int.Parse(purp.Substring(4)) >3)
             {
                 values = String.Format("{0:d}, '{1:s}', '{2:s}'", num, purp, DateTime.Now.ToString());
-                InsertInDB("main", values);
+                Console.WriteLine(values);
+                return InsertInDB("main", values);
             }
             else
             {
                 values = String.Format("{0:d}, '{1:s}', '{2:s}'", num, purp, DateTime.Now.ToString());
-                InsertInDB("fast", values);
+                Console.WriteLine(values);
+                return InsertInDB("fast", values);
             }
-            Console.WriteLine(values);
         }
-        public void AddRef(int num, string purp, int priority)
+        public bool AddRef(int num, string purp, int priority)
         {
             string values;
             values = String.Format("{0:d}, '{1:s}', '{2:s}', {3:d}, {4:d}", num, purp, DateTime.Now.ToString(), priority, 1);
-            InsertInDB("reference", values);
-            Console.WriteLine(values);
+            Console.WriteLine(values); 
+            return InsertInDB("reference", values);
         }
 
         public string GetConfig()
@@ -636,9 +655,9 @@ namespace Server
             catch { str = " "; }
             return str;
         }
-        public string GetClientMain(int p)
+        public string GetClientMain(int n)
         {
-            string msg = SelectFromDB("main", p);
+            string msg = SelectFromDB("main", n);
             if (msg != " ")
             {
                 string[] tmpbuf1=msg.Split(';');
@@ -647,15 +666,16 @@ namespace Server
                     string[] tmpbuf2 = tmpbuf1[i].Split('_');
                     InsertInDB("mainhist", String.Format("{0}, {1}, '{2}', '{3}', '{4}'", tmpbuf2[0], tmpbuf2[1], tmpbuf2[2], tmpbuf2[3], DateTime.Now.ToString()));
                 }
-                RemoveFromDB("main", p);
+                RemoveFromDB("main", n);
             }
             else
                 return "error";
+            Number = n;
             return msg;
         }
-        public string GetClientFast(int p)
+        public string GetClientFast(int n)
         {
-            string msg = SelectFromDB("fast", p);
+            string msg = SelectFromDB("fast", n);
             if (msg != " ")
             {
                 string[] tmpbuf1 = msg.Split(';');
@@ -664,10 +684,11 @@ namespace Server
                     string[] tmpbuf2 = tmpbuf1[i].Split('_');
                     InsertInDB("fasthist", String.Format("{0}, {1}, '{2}', '{3}', '{4}'", tmpbuf2[0], tmpbuf2[1], tmpbuf2[2], tmpbuf2[3], DateTime.Now.ToString()));
                 }
-                RemoveFromDB("fast", p);
+                RemoveFromDB("fast", n);
             }
             else
                 return "error";
+            Number = n;
             return msg;
         }
         public string GetReferenceOne(int p)
