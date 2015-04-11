@@ -1,4 +1,0 @@
-C:\Users\User\Documents\Visual Studio 2013\Projects\App16\Components\zxing.net.mobile-1.4.7.2\samples\Sample.Android\Sample.Android\bin\Debug\ZXingSampleAndroid.dll
-C:\Users\User\Documents\Visual Studio 2013\Projects\App16\Components\zxing.net.mobile-1.4.7.2\samples\Sample.Android\packages\Xamarin.Android.Support.v4.21.0.3.0\lib\MonoAndroid10\Xamarin.Android.Support.v4.dll
-C:\Users\User\Documents\Visual Studio 2013\Projects\App16\Components\zxing.net.mobile-1.4.7.2\lib\android\zxing.monoandroid.dll
-C:\Users\User\Documents\Visual Studio 2013\Projects\App16\Components\zxing.net.mobile-1.4.7.2\lib\android\ZXing.Net.Mobile.dll
