@@ -72,9 +72,11 @@ namespace App16
             switch((int)a.Tag)
             {
                 case 1:
+                    GetNumber.Clickable = false;
                     new Thread(new ParameterizedThreadStart(GetRandomNumber)).Start();
                     break;
                 case 2:
+                    GetNumber.Clickable = true;
                     SendPurpose();
                     break;
                 case 0:
