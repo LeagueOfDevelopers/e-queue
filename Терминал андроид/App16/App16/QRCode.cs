@@ -23,6 +23,7 @@ namespace App16
         TextView watch;
         TextView number;
         ImageView qrcode;
+        TextView internetAddress;
         Button bexit;
         bool q;
         protected override void OnCreate(Bundle bundle)
@@ -31,9 +32,10 @@ namespace App16
             SetContentView(Resource.Layout.QRCode);
 
             watch = (TextView)FindViewById(Resource.Id.textClock);
-            number = (TextView)FindViewById(Resource.Id.textView8); number.Text = StaticData.ChangedNumber;
+            number = (TextView)FindViewById(Resource.Id.textView8); number.Text = StaticData.ChangedNumber.ToString();
             qrcode = (ImageView)FindViewById(Resource.Id.imageqrcode); qrcode.SetImageBitmap(StaticData.QRCode);
             bexit = (Button)FindViewById(Resource.Id.bexit3); bexit.Click += bexit_Click;
+            internetAddress = (TextView)FindViewById(Resource.Id.textView10); internetAddress.Text = String.Format("Подробную информацию узнайте на сайте http://studok.misis.ru/{0:d} ", StaticData.ChangedNumber);
             
             q = true;
             

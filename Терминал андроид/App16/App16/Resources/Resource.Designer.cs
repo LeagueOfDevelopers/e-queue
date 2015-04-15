@@ -26,6 +26,8 @@ namespace App16
 		
 		public static void UpdateIdValues()
 		{
+			global::Refractored.Xam.TTS.Resource.String.ApplicationName = global::App16.Resource.String.ApplicationName;
+			global::Refractored.Xam.TTS.Resource.String.Hello = global::App16.Resource.String.Hello;
 			global::ZXing.Mobile.Resource.Id.contentFrame = global::App16.Resource.Id.contentFrame;
 			global::ZXing.Mobile.Resource.Layout.zxingscanneractivitylayout = global::App16.Resource.Layout.zxingscanneractivitylayout;
 			global::ZXing.Mobile.Resource.Layout.zxingscannerfragmentlayout = global::App16.Resource.Layout.zxingscannerfragmentlayout;
@@ -72,161 +74,161 @@ namespace App16
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060002
-			public const int b1 = 2131099650;
+			// aapt resource value: 0x7f070002
+			public const int b1 = 2131165186;
 			
-			// aapt resource value: 0x7f060003
-			public const int b2 = 2131099651;
+			// aapt resource value: 0x7f070003
+			public const int b2 = 2131165187;
 			
-			// aapt resource value: 0x7f060004
-			public const int b3 = 2131099652;
+			// aapt resource value: 0x7f070004
+			public const int b3 = 2131165188;
 			
-			// aapt resource value: 0x7f060006
-			public const int b4 = 2131099654;
+			// aapt resource value: 0x7f070006
+			public const int b4 = 2131165190;
 			
-			// aapt resource value: 0x7f060007
-			public const int b5 = 2131099655;
+			// aapt resource value: 0x7f070007
+			public const int b5 = 2131165191;
 			
-			// aapt resource value: 0x7f060008
-			public const int b6 = 2131099656;
+			// aapt resource value: 0x7f070008
+			public const int b6 = 2131165192;
 			
-			// aapt resource value: 0x7f060009
-			public const int b7 = 2131099657;
+			// aapt resource value: 0x7f070009
+			public const int b7 = 2131165193;
 			
-			// aapt resource value: 0x7f06000a
-			public const int b8 = 2131099658;
+			// aapt resource value: 0x7f07000a
+			public const int b8 = 2131165194;
 			
-			// aapt resource value: 0x7f06000b
-			public const int b9 = 2131099659;
+			// aapt resource value: 0x7f07000b
+			public const int b9 = 2131165195;
 			
-			// aapt resource value: 0x7f060032
-			public const int bConnect = 2131099698;
+			// aapt resource value: 0x7f070032
+			public const int bConnect = 2131165234;
 			
-			// aapt resource value: 0x7f06002f
-			public const int benter = 2131099695;
+			// aapt resource value: 0x7f07002f
+			public const int benter = 2131165231;
 			
-			// aapt resource value: 0x7f060018
-			public const int bentque = 2131099672;
+			// aapt resource value: 0x7f070018
+			public const int bentque = 2131165208;
 			
-			// aapt resource value: 0x7f06000e
-			public const int bexit = 2131099662;
+			// aapt resource value: 0x7f07000e
+			public const int bexit = 2131165198;
 			
-			// aapt resource value: 0x7f06001a
-			public const int bexit2 = 2131099674;
+			// aapt resource value: 0x7f07001a
+			public const int bexit2 = 2131165210;
 			
-			// aapt resource value: 0x7f060022
-			public const int bexit3 = 2131099682;
+			// aapt resource value: 0x7f070022
+			public const int bexit3 = 2131165218;
 			
-			// aapt resource value: 0x7f06001b
-			public const int bgetnum = 2131099675;
+			// aapt resource value: 0x7f07001b
+			public const int bgetnum = 2131165211;
 			
-			// aapt resource value: 0x7f060028
-			public const int bsend = 2131099688;
+			// aapt resource value: 0x7f070028
+			public const int bsend = 2131165224;
 			
-			// aapt resource value: 0x7f060033
-			public const int contentFrame = 2131099699;
+			// aapt resource value: 0x7f070033
+			public const int contentFrame = 2131165235;
 			
-			// aapt resource value: 0x7f060020
-			public const int imageqrcode = 2131099680;
+			// aapt resource value: 0x7f070020
+			public const int imageqrcode = 2131165216;
 			
-			// aapt resource value: 0x7f060001
-			public const int linearLayout1 = 2131099649;
+			// aapt resource value: 0x7f070001
+			public const int linearLayout1 = 2131165185;
 			
-			// aapt resource value: 0x7f060005
-			public const int linearLayout2 = 2131099653;
+			// aapt resource value: 0x7f070005
+			public const int linearLayout2 = 2131165189;
 			
-			// aapt resource value: 0x7f06000c
-			public const int linearLayout4 = 2131099660;
+			// aapt resource value: 0x7f07000c
+			public const int linearLayout4 = 2131165196;
 			
-			// aapt resource value: 0x7f060013
-			public const int linearLayout5 = 2131099667;
+			// aapt resource value: 0x7f070013
+			public const int linearLayout5 = 2131165203;
 			
-			// aapt resource value: 0x7f060014
-			public const int linearLayout6 = 2131099668;
+			// aapt resource value: 0x7f070014
+			public const int linearLayout6 = 2131165204;
 			
-			// aapt resource value: 0x7f060017
-			public const int linearLayout7 = 2131099671;
+			// aapt resource value: 0x7f070017
+			public const int linearLayout7 = 2131165207;
 			
-			// aapt resource value: 0x7f06002e
-			public const int listView1 = 2131099694;
+			// aapt resource value: 0x7f07002e
+			public const int listView1 = 2131165230;
 			
-			// aapt resource value: 0x7f060010
-			public const int mainlayout = 2131099664;
+			// aapt resource value: 0x7f070010
+			public const int mainlayout = 2131165200;
 			
-			// aapt resource value: 0x7f060023
-			public const int t1 = 2131099683;
+			// aapt resource value: 0x7f070023
+			public const int t1 = 2131165219;
 			
-			// aapt resource value: 0x7f060024
-			public const int t2 = 2131099684;
+			// aapt resource value: 0x7f070024
+			public const int t2 = 2131165220;
 			
-			// aapt resource value: 0x7f060025
-			public const int t3 = 2131099685;
+			// aapt resource value: 0x7f070025
+			public const int t3 = 2131165221;
 			
-			// aapt resource value: 0x7f060026
-			public const int t4 = 2131099686;
+			// aapt resource value: 0x7f070026
+			public const int t4 = 2131165222;
 			
-			// aapt resource value: 0x7f060027
-			public const int t5 = 2131099687;
+			// aapt resource value: 0x7f070027
+			public const int t5 = 2131165223;
 			
-			// aapt resource value: 0x7f060000
-			public const int textClock = 2131099648;
+			// aapt resource value: 0x7f070000
+			public const int textClock = 2131165184;
 			
-			// aapt resource value: 0x7f060029
-			public const int textInfo0 = 2131099689;
+			// aapt resource value: 0x7f07002d
+			public const int textInfo0 = 2131165229;
 			
-			// aapt resource value: 0x7f06002a
-			public const int textInfo1 = 2131099690;
+			// aapt resource value: 0x7f070029
+			public const int textInfo1 = 2131165225;
 			
-			// aapt resource value: 0x7f06002b
-			public const int textInfo2 = 2131099691;
+			// aapt resource value: 0x7f07002a
+			public const int textInfo2 = 2131165226;
 			
-			// aapt resource value: 0x7f06002c
-			public const int textInfo3 = 2131099692;
+			// aapt resource value: 0x7f07002b
+			public const int textInfo3 = 2131165227;
 			
-			// aapt resource value: 0x7f06002d
-			public const int textInfo4 = 2131099693;
+			// aapt resource value: 0x7f07002c
+			public const int textInfo4 = 2131165228;
 			
-			// aapt resource value: 0x7f06001c
-			public const int textView1 = 2131099676;
+			// aapt resource value: 0x7f07001c
+			public const int textView1 = 2131165212;
 			
-			// aapt resource value: 0x7f060021
-			public const int textView10 = 2131099681;
+			// aapt resource value: 0x7f070021
+			public const int textView10 = 2131165217;
 			
-			// aapt resource value: 0x7f06001d
-			public const int textView2 = 2131099677;
+			// aapt resource value: 0x7f07001d
+			public const int textView2 = 2131165213;
 			
-			// aapt resource value: 0x7f06000d
-			public const int textView3 = 2131099661;
+			// aapt resource value: 0x7f07000d
+			public const int textView3 = 2131165197;
 			
-			// aapt resource value: 0x7f06000f
-			public const int textView4 = 2131099663;
+			// aapt resource value: 0x7f07000f
+			public const int textView4 = 2131165199;
 			
-			// aapt resource value: 0x7f060012
-			public const int textView5 = 2131099666;
+			// aapt resource value: 0x7f070012
+			public const int textView5 = 2131165202;
 			
-			// aapt resource value: 0x7f060019
-			public const int textView6 = 2131099673;
+			// aapt resource value: 0x7f070019
+			public const int textView6 = 2131165209;
 			
-			// aapt resource value: 0x7f060015
-			public const int textView7 = 2131099669;
+			// aapt resource value: 0x7f070015
+			public const int textView7 = 2131165205;
 			
-			// aapt resource value: 0x7f06001f
-			public const int textView8 = 2131099679;
+			// aapt resource value: 0x7f07001f
+			public const int textView8 = 2131165215;
 			
-			// aapt resource value: 0x7f06001e
-			public const int textView9 = 2131099678;
+			// aapt resource value: 0x7f07001e
+			public const int textView9 = 2131165214;
 			
-			// aapt resource value: 0x7f060030
-			public const int text_ip = 2131099696;
+			// aapt resource value: 0x7f070030
+			public const int text_ip = 2131165232;
 			
-			// aapt resource value: 0x7f060016
-			public const int text_number = 2131099670;
+			// aapt resource value: 0x7f070016
+			public const int text_number = 2131165206;
 			
-			// aapt resource value: 0x7f060031
-			public const int text_port = 2131099697;
+			// aapt resource value: 0x7f070031
+			public const int text_port = 2131165233;
 			
-			// aapt resource value: 0x7f060011
-			public const int txtMessage = 2131099665;
+			// aapt resource value: 0x7f070011
+			public const int txtMessage = 2131165201;
 			
 			static Id()
 			{
@@ -284,44 +286,60 @@ namespace App16
 			}
 		}
 		
+		public partial class Raw
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int file1 = 2130968576;
+			
+			static Raw()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Raw()
+			{
+			}
+		}
+		
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040001
-			public const int ApplicationName = 2130968577;
+			// aapt resource value: 0x7f050001
+			public const int ApplicationName = 2131034113;
 			
-			// aapt resource value: 0x7f040009
-			public const int Connect = 2130968585;
+			// aapt resource value: 0x7f050009
+			public const int Connect = 2131034121;
 			
-			// aapt resource value: 0x7f040000
-			public const int Hello = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int Hello = 2131034112;
 			
-			// aapt resource value: 0x7f040002
-			public const int clock = 2130968578;
+			// aapt resource value: 0x7f050002
+			public const int clock = 2131034114;
 			
-			// aapt resource value: 0x7f040008
-			public const int enterQueue = 2130968584;
+			// aapt resource value: 0x7f050008
+			public const int enterQueue = 2131034120;
 			
-			// aapt resource value: 0x7f040003
-			public const int txtLayout1 = 2130968579;
+			// aapt resource value: 0x7f050003
+			public const int txtLayout1 = 2131034115;
 			
-			// aapt resource value: 0x7f040004
-			public const int txtLayout2 = 2130968580;
+			// aapt resource value: 0x7f050004
+			public const int txtLayout2 = 2131034116;
 			
-			// aapt resource value: 0x7f040005
-			public const int txtLayout3 = 2130968581;
+			// aapt resource value: 0x7f050005
+			public const int txtLayout3 = 2131034117;
 			
-			// aapt resource value: 0x7f040006
-			public const int txtLayout4 = 2130968582;
+			// aapt resource value: 0x7f050006
+			public const int txtLayout4 = 2131034118;
 			
-			// aapt resource value: 0x7f040007
-			public const int txtLayout5 = 2130968583;
+			// aapt resource value: 0x7f050007
+			public const int txtLayout5 = 2131034119;
 			
-			// aapt resource value: 0x7f04000b
-			public const int забрать_справку = 2130968587;
+			// aapt resource value: 0x7f05000b
+			public const int забрать_справку = 2131034123;
 			
-			// aapt resource value: 0x7f04000a
-			public const int основнаяОчередь = 2130968586;
+			// aapt resource value: 0x7f05000a
+			public const int основнаяОчередь = 2131034122;
 			
 			static String()
 			{
@@ -336,14 +354,14 @@ namespace App16
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f050002
-			public const int Mono_Android_Theme_Splash = 2131034114;
+			// aapt resource value: 0x7f060002
+			public const int Mono_Android_Theme_Splash = 2131099650;
 			
-			// aapt resource value: 0x7f050001
-			public const int button_main = 2131034113;
+			// aapt resource value: 0x7f060001
+			public const int button_main = 2131099649;
 			
-			// aapt resource value: 0x7f050000
-			public const int button_text = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int button_text = 2131099648;
 			
 			static Style()
 			{

@@ -88,16 +88,13 @@ namespace App16
             while (true)
                 if (SCT.SCTisFree)
                 {
-                    if(number.Text.Length!=6)
-                    {
-                        numstr = ""; q2 = true; ShowMessage("Ошибка", "Корректный номер студенческого билета состоит из 6 цифр", false);
-                    }
-                    else if (FindRef())
+                    if(number.Text.Length!=6){numstr = ""; q2 = true; ShowMessage("Ошибка", "Корректный номер студенческого билета состоит из 6 цифр", false);}
+                    else if (FindRef(true))
                     {
                         SCT.SCTisFree = false;
                         SCT.Send("prop" + StaticData.ChangedButton);
                         SCT.Send(number.Text);
-                        StaticData.ChangedNumber = number.Text;
+                        StaticData.ChangedNumber = int.Parse(number.Text);
                         if (bool.Parse(SCT.Receive()))
                         {
                             StaticData.CreateQRCode(String.Format("Вы успешно встали в очередь по коротким вопросам, ваш номер: {0:s}.\nВсю подробную информацию о продвижении очереди узнайте на сайте http://studok.misis.ru \n\nУдачного дня!", number.Text));
@@ -111,24 +108,42 @@ namespace App16
                             ShowMessage("Ошибка", "Не удалось выполнить операцию, повторите попытку", false);
                         }
                     }
-                    else { numstr = ""; q2 = true; ShowMessage("Справка не готова", "Справка с данным номером отсутствует. Возможно она еще не готова, либо вовсе не была заказана", false); }
+                    else if (FindRef(false)) { numstr = ""; q2 = true; ShowMessage("Справка не готова", "Справка с данным номером пока не готова. Проверьте статус готовности позже.", false);}
+                    else { numstr = ""; q2 = true; ShowMessage("Справка не готова", "Справка с данным номером отсутствует в базе. Пожалуйста оставьте заявку еще раз.", false); }
                     break;
                 } await Task.Delay(500);
         }
-        private bool FindRef()
+        private bool FindRef(bool onDisplay)
         {
             bool q = false;
-            for (int i = 0; i < StaticData.References.Count; i++)
-                try
-                {
-                    if (int.Parse(StaticData.References[i].Number) == int.Parse(number.Text))
+            if (onDisplay)
+            {
+                for (int i = 0; i < StaticData.ReferencesOnDisplay.Count; i++)
+                    try
                     {
-                        q = true;
-                        break;
+                        if (int.Parse(StaticData.ReferencesOnDisplay[i].Number) == int.Parse(number.Text))
+                        {
+                            q = true;
+                            break;
+                        }
                     }
-                }
-                catch { }
-            return q;
+                    catch { }
+                return q;
+            }
+            else
+            {
+                for (int i = 0; i < StaticData.References.Count; i++)
+                    try
+                    {
+                        if (int.Parse(StaticData.References[i].Number) == int.Parse(number.Text))
+                        {
+                            q = true;
+                            break;
+                        }
+                    }
+                    catch { }
+                return q;
+            }
         }
 
         private async void CheckConnectionLoop()

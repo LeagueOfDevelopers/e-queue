@@ -54,6 +54,8 @@ namespace App16
             RefreshLoop();
             UpdatingRef();
             CheckConnectionLoop();
+
+            StaticData.Say("...");
         }
 
         private async void RefreshLoop()
@@ -70,7 +72,7 @@ namespace App16
             try
             {
                 textMessage.Text = StaticData.Config.Last();
-                textInfo0.Text = String.Format("Номер: {0:d}", StaticData.Number);
+                textInfo0.Text = String.Format("{0:d}", StaticData.Number);
                 textInfo1.Text = String.Format("Всего в очереди: {0:d}", StaticData.MainCount + StaticData.FastCount);
                 textInfo2.Text = String.Format("По длительным вопросам: {0:d}", StaticData.MainCount);
                 textInfo3.Text = String.Format("По коротким вопросам: {0:d}", StaticData.FastCount);
@@ -82,7 +84,7 @@ namespace App16
         {
             while (true)
             {
-                adapter = new ListAdapter(this, StaticData.References);
+                adapter = new ListAdapter(this, StaticData.ReferencesOnDisplay);
                 listView1.Adapter = adapter;
                 await Task.Delay(15000);
             }
@@ -97,7 +99,10 @@ namespace App16
                         StaticData.StopUpdating();
                         try { ShowMessage("Ошибка", "Потеряно соединение с сервером.", true); }
                         catch { }
+                        await Task.Delay(3000);
                         q = false;
+                        StartActivity(typeof(MainActivity));
+                        this.Finish();
                     }
                     await Task.Delay(100);
             }

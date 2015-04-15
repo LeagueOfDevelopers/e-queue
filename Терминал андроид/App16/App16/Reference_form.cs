@@ -76,51 +76,52 @@ namespace App16
                     this.Finish();
                     break;
                 case 1:
-                     if (t1.Text.Length != 6)
-                        ShowMessage("Ошибка", "Корректный номер студенческого билета состоит из 6 цифр", false);
-                     if (t2.Text == "" || t3.Text == "")
-                        ShowMessage("Ошибка", "Поля с ФИО и датой рождения обязательно должны быть заполнены", false);
-                     SendReference();
+                    if(CheckValidation()) SendReference();
                     break;
             }
             SleepThread.Abort();
             SleepThread = new Thread(new ParameterizedThreadStart(Sleep));
             SleepThread.Start();
         }
+        private bool CheckValidation()
+        {
+            if (t1.Text.Length != 6)
+            { ShowMessage("Ошибка", "Корректный номер студенческого билета состоит из 6 цифр", false); return false; }
+            if (t2.Text == "" || t3.Text == "")
+            { ShowMessage("Ошибка", "Поля с ФИО и датой рождения обязательно должны быть заполнены", false); return false; }
+            if(t2.Text.Contains('_')||t2.Text.Contains(';')||t3.Text.Contains('_')||t3.Text.Contains(';')||t4.Text.Contains('_')||t4.Text.Contains(';')||t5.Text.Contains('_')||t5.Text.Contains(';'))
+            { ShowMessage("Ошибка", "Строки не должны содержать символы ';' и '_'", false);return false; }
+            DateTime dt;
+            if(!DateTime.TryParse(t3.Text, out dt))
+            { ShowMessage("Ошибка", "Неправильно введена дата рождения", false); return false; }
+            return true;
+        }
         private async void SendReference()
         {
-            if (t1.Text.Length == 6 && t2.Text.Trim() != "" && t3.Text.Trim() != "")
+            while (true)
             {
-                while (true)
+                if (SCT.SCTisFree)
                 {
-                    if (SCT.SCTisFree)
+                    SCT.SCTisFree = false;
+                    SCT.Send(requests.Refc1.ToString());
+                    SCT.Send(t1.Text);
+                    StaticData.ChangedNumber = int.Parse(t1.Text);
+                    SCT.Send(String.Format("{0}_{1}_{2}_{3}", t2.Text, DateTime.Parse(t3.Text).ToString("dd.MM.yyyy"), t4.Text, t5.Text));
+                    if (bool.Parse(SCT.Receive()))
                     {
-                        if(t2.Text.Contains('_')||t2.Text.Contains(';')||t3.Text.Contains('_')||t3.Text.Contains(';')||t4.Text.Contains('_')||t4.Text.Contains(';')||t5.Text.Contains('_')||t5.Text.Contains(';'))
-                        {
-                            ShowMessage("Ошибка", "Строки не должны содержать символы ';' и '_'", false);
-                            break;
-                        }
-                        SCT.SCTisFree = false;
-                        SCT.Send(requests.Refc1.ToString());
-                        SCT.Send(t1.Text);
-                        StaticData.ChangedNumber = t1.Text;
-                        SCT.Send(String.Format("{0}_{1}_{2}_{3}", t2.Text, t3.Text, t4.Text, t5.Text));
-                        if (bool.Parse(SCT.Receive()))
-                        {
-                            StaticData.CreateQRCode(String.Format("Вы успешно отправили заявку на справку.\nВведенные вами данные:\nНомер студенческого билета: {0}\nФИО: {1}\nДата рождения: {2}\nНаправление справки: {3}\nДополнительная информация: {4}\nВсю подробную информацию о продвижении очереди узнайте на сайте http://studok.misis.ru \n\nУдачного дня!", t1.Text, t2.Text, t3.Text, t4.Text, t5.Text));
-                            StartActivity(typeof(QRCodeDisplayingReference));
-                            SCT.SCTisFree = true;
-                            this.Finish();
-                        }
-                        else
-                        {
-                            SCT.SCTisFree = true;
-                            ShowMessage("Ошибка", "Не удалось выполнить операцию, повторите попытку", false);
-                        }
-                        break;
+                        StaticData.CreateQRCode(String.Format("Вы успешно отправили заявку на справку.\nВведенные вами данные:\nНомер студенческого билета: {0}\nФИО: {1}\nДата рождения: {2}\nНаправление справки: {3}\nДополнительная информация: {4}\nВсю подробную информацию о продвижении очереди узнайте на сайте http://studok.misis.ru \n\nУдачного дня!", t1.Text, t2.Text, t3.Text, t4.Text, t5.Text));
+                        StartActivity(typeof(QRCodeDisplayingReference));
+                        SCT.SCTisFree = true;
+                        this.Finish();
                     }
-                    await Task.Delay(500);
+                    else
+                    {
+                        SCT.SCTisFree = true;
+                        ShowMessage("Ошибка", "Не удалось выполнить операцию, повторите попытку", false);
+                    }
+                    break;
                 }
+                await Task.Delay(500);
             }
         }
 

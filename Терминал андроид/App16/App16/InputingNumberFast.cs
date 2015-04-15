@@ -91,7 +91,7 @@ namespace App16
                         SCT.SCTisFree = false;
                         SCT.Send("prop" + StaticData.ChangedButton);
                         SCT.Send(number.Text);
-                        StaticData.ChangedNumber = number.Text;
+                        StaticData.ChangedNumber = int.Parse(number.Text);
                         if (bool.Parse(SCT.Receive()))
                         {
                             StaticData.CreateQRCode(String.Format("Вы успешно встали в очередь по коротким вопросам, ваш номер: {0:s}.\nВсю подробную информацию о продвижении очереди узнайте на сайте http://studok.misis.ru \n\nУдачного дня!", number.Text));

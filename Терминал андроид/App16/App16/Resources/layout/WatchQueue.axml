@@ -58,30 +58,21 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/linearLayout5"
-            android:paddingLeft="50dp"
+            android:paddingLeft="40dp"
             android:paddingTop="15dp"
-            android:paddingRight="70dp">
+            android:paddingRight="10dp">
             <TextView
                 android:text="Основная информация:"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:gravity="right"
                 android:layout_marginBottom="15dp" />
-            <TextView
-                android:text="Номер: 0"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textInfo0"
-                android:gravity="left"
-                android:textSize="12sp"
-                android:layout_marginBottom="12dp"
-                android:textStyle="normal" />
             <TextView
                 android:text="Всего в очереди: 25"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textInfo1"
-                android:gravity="left"
+                android:gravity="right"
                 android:textSize="12sp"
                 android:layout_marginBottom="12dp" />
             <TextView
@@ -89,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:id="@+id/textInfo2"
-                android:gravity="left"
+                android:gravity="right"
                 android:textSize="12dp"
                 android:layout_marginBottom="12dp" />
             <TextView
@@ -97,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textInfo3"
-                android:gravity="left"
+                android:gravity="right"
                 android:textSize="12sp"
                 android:layout_marginBottom="12dp" />
             <TextView
@@ -105,9 +96,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textInfo4"
-                android:gravity="left"
+                android:gravity="right"
                 android:textSize="12sp"
                 android:layout_marginBottom="12dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:id="@+id/linearLayout5"
+            android:paddingTop="15dp">
+            <TextView
+                android:text="Номер:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textInfo1"
+                android:gravity="center"
+                android:layout_marginBottom="15dp"
+                android:textStyle="bold" />
+            <TextView
+                android:text="254698"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textInfo0"
+                android:gravity="center"
+                android:textSize="35sp"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -117,14 +135,14 @@
             android:id="@+id/linearLayout6"
             android:paddingRight="50dp"
             android:paddingTop="15dp"
-            android:paddingLeft="70dp"
-            android:paddingBottom="15dp">
+            android:paddingBottom="15dp"
+            android:paddingLeft="10dp">
             <TextView
                 android:text="Готовые справки:"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textInfo1"
-                android:gravity="right"
+                android:gravity="left"
                 android:layout_marginBottom="15dp" />
             <ListView
                 android:id="@+id/listView1"

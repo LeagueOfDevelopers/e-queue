@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Android.App;
 using Android.Content;
@@ -11,10 +12,13 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Graphics;
+using Android.Media;
 
 using ZXing.QrCode;
 using ZXing;
 using ZXing.Common;
+
+using Refractored.Xam.TTS;
 
 namespace App16
 {
@@ -24,11 +28,14 @@ namespace App16
     {
         public static int Size { get; set; }
         public static List<string> Config { get; set; }
+        static MediaPlayer player;
         public StaticData(int size)
         {
             Size = size;
             Config = new List<string>();
             References = new List<ReferenceOne>();
+            ReferencesOnDisplay = new List<ReferenceOne>();
+            player = MediaPlayer.Create(Application.Context, Resource.Raw.file1);
         }
 
         //Работа с обновлением данных:
@@ -38,6 +45,7 @@ namespace App16
         public static int FastCount {get;set;}
         public static int MiddleTime { get; set; }
         public static List<ReferenceOne> References { get; set; }
+        public static List<ReferenceOne> ReferencesOnDisplay { get; set; }
         public static void StartUpdating()
         {
             if (RefLoop==null || RefLoop.ThreadState != ThreadState.Running)
@@ -49,6 +57,12 @@ namespace App16
         public static void StopUpdating()
         {
             RefLoop.Abort();
+        }
+        public async static void Say(string text)
+        {
+            player.Start();
+            await Task.Delay(3000);
+            CrossTextToSpeech.Current.Speak(text, true, null, 1.15f, 0.9f, null);
         }
         private static void ThreadRefLoop(Object ob)
         {
@@ -63,9 +77,18 @@ namespace App16
                     LoadFastCount();
                     LoadTimeWait();
                     LoadReferences();
+                    DisplayReferences();
                     SCT.SCTisFree = true;
                     Thread.Sleep(15000);
                 }
+            }
+        }
+        private static void CheckNumber(int num)
+        {
+            if (Number != num)
+            {
+                string nstr = num.ToString("# # # # # #");
+                Say(String.Format("Клиент номер, {0:s}. Пройдите в кабинет.", nstr));
             }
         }
         private static void LoadConfig()
@@ -76,7 +99,12 @@ namespace App16
         private static void LoadNumber()
         {
             SCT.Send(requests.GetNu.ToString());
-            try { Number = int.Parse(SCT.Receive()); }
+            try
+            {
+                int num = int.Parse(SCT.Receive());
+                CheckNumber(num);
+                Number = num;
+            }
             catch { };
         }
         private static void LoadMainCount()
@@ -108,23 +136,32 @@ namespace App16
                 try
                 {
                     string[] tmp3 = tmp2[i].Split('_');
-                    if (int.Parse(tmp3[8]) != 1)
+                    ReferenceOne r = new ReferenceOne();
+                    r.Number = tmp3[1];
+                    switch (int.Parse(tmp3[8]))
                     {
-                        ReferenceOne r = new ReferenceOne();
-                        r.Number = tmp3[1];
-                        switch (int.Parse(tmp3[8]))
-                        {
-                            case 2:
-                                r.Status = "Недостаточно данных";
-                                break;
-                            case 3:
-                                r.Status = "Готова";
-                                break;
-                        }
-                        References.Add(r);
+                        case 1:
+                            r.Status = "Не готова";
+                            break;
+                        case 2:
+                            r.Status = "Недостаточно данных";
+                            break;
+                        case 3:
+                            r.Status = "Готова";
+                            break;
                     }
+                    References.Add(r);
                 }
                 catch { }
+            }
+        }
+        private static void DisplayReferences()
+        {
+            ReferencesOnDisplay.Clear();
+            foreach (ReferenceOne x in References)
+            {
+                if (x.Status != "Не готова")
+                    ReferencesOnDisplay.Add(x);
             }
         }
         public static void SetConfig(string msg)
@@ -138,9 +175,9 @@ namespace App16
             catch { }
         }
 
-        //тарнпорт переменных между activities
+        //транспорт переменных между activities
         public static int ChangedButton { get; set; }
-        public static string ChangedNumber { get; set; }
+        public static int ChangedNumber { get; set; }
 
         //создание qrcode:
         public static Bitmap QRCode { get; set; }

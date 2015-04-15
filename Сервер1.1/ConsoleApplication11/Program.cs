@@ -93,11 +93,11 @@ namespace Server
             Buffer = new byte[1024];
             bool q = true;
             string str;
-            if (Passwords.checkPass(Receive(out str)))
+            try
             {
-                Console.WriteLine("Устройство авторизовано");
-                try
+                if (Passwords.checkPass(Receive(out str)))
                 {
+                    Console.WriteLine("Устройство авторизовано");
                     while (q)
                     {
                         string b;
@@ -105,9 +105,9 @@ namespace Server
                         q = SwitchReq(a, b);
                     }
                 }
-                catch { Console.WriteLine("Ошибка в соединении."); }
+                else Console.WriteLine("Устройство не авторизовано");
             }
-            else Console.WriteLine("Устройство не авторизовано");
+            catch { Console.WriteLine("Ошибка в соединении."); }
             Client.Close();
             Console.WriteLine("Соединение с {0} завершено", EndPoint);
         }

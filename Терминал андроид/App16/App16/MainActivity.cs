@@ -27,7 +27,9 @@ namespace App16
         string filePath;
 
         bool q; // переменная, надо ли проверять результат подключения
+        bool w; // защита от дублирования сообщений
 
+        Thread CheckConnectionThread;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -48,6 +50,10 @@ namespace App16
             checkConfig();
 
             RefreshLoop();
+
+            w = true;
+
+            bconnect_Click(null, null);
         }
         private void checkConfig()
         {
@@ -82,7 +88,7 @@ namespace App16
 
         private void bconnect_Click(object sender, EventArgs e)
         {
-            ShowMessage("Connection", String.Format("Попытка подключения..."));
+            if (w) { ShowMessage("Connection", String.Format("Попытка подключения...")); w = false; }
             try
             {
                 IPAddress ip = IPAddress.Parse(iptxt.Text);
@@ -97,7 +103,8 @@ namespace App16
                 bconnect.Clickable = false;
                 SCT.Connecting();
                 timeout(15);
-                CheckConnectLoop();
+                CheckConnectionThread = new Thread(new ParameterizedThreadStart(CheckConnectLoop));
+                CheckConnectionThread.Start();
             }
             catch(Exception ex)
             {
@@ -109,29 +116,32 @@ namespace App16
             await Task.Delay(seconds * 1000);
             q = true;
         }
-        private async void CheckConnectLoop()
+        private void CheckConnectLoop(object ob)
         {
             while (true)
             {
-                await Task.Delay(100);
-                if (q || (SCT.AR != null && SCT.AR.IsCompleted))
+                Thread.Sleep(100);
+                try
                 {
-                    if (SCT.Socket.Connected)
+                    if (q || (SCT.AR != null && SCT.AR.IsCompleted))
                     {
-                        ShowMessage("Connection", "Соединение установлено");
-                        SCT.Send(Passwords.getPass());
-                        StartActivity(typeof(DisplayingQueue));
-                        this.Finish();
-                        break;
-                    }
-                    else
-                    {
-                        ShowMessage("Connection", "Не удалось установить соединение");
-                        SCT.Socket.Close();
-                        bconnect.Clickable = true;
-                        break;
+                        if (SCT.Socket.Connected)
+                        {
+                            SCT.Send(Passwords.getPass());
+                            StartActivity(typeof(DisplayingQueue));
+                            this.Finish();
+                            break;
+                        }
+                        else
+                        {
+                            SCT.Socket.Close();
+                            bconnect.Clickable = true;
+                            bconnect_Click(null,null);
+                            break;
+                        }
                     }
                 }
+                catch { }
             }
         }
 
@@ -140,7 +150,12 @@ namespace App16
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.SetTitle(title);
             dialog.SetMessage(message);
-            dialog.Create();
+            dialog.SetNegativeButton("Отмена", delegate
+            {
+                bconnect.Clickable = true;
+                CheckConnectionThread.Abort();
+                w = true;
+            });
             dialog.Show();
         }
     }

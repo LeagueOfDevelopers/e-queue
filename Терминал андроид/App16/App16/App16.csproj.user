@@ -2,6 +2,6 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <AndroidDesignerPreferredDevice>Nexus 4</AndroidDesignerPreferredDevice>
-    <AndroidDesignerPreferredTheme>Theme.Light.NoTitleBar.Fullscreen</AndroidDesignerPreferredTheme>
+    <AndroidDesignerPreferredTheme>Theme.Holo.Light.NoActionBar.Fullscreen</AndroidDesignerPreferredTheme>
   </PropertyGroup>
 </Project>

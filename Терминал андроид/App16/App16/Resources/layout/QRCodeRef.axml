@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textView10"
                 android:gravity="center"
-                android:textSize="12sp"
+                android:textSize="9sp"
                 android:layout_weight="1" />
         </LinearLayout>
         <TextView
