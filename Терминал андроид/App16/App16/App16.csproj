@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buttons.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Passwords.cs" />
     <Compile Include="StaticData.cs" />
     <Compile Include="DisplayingQueue.cs" />
@@ -104,7 +105,46 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
-    <AndroidResource Include="Resources\raw\file1.mp3" />
+    <AndroidResource Include="Resources\raw\bumbumbum.mp3" />
+    <AndroidResource Include="Resources\raw\n1.wav" />
+    <AndroidResource Include="Resources\raw\n2.wav" />
+    <AndroidResource Include="Resources\raw\n3.wav" />
+    <AndroidResource Include="Resources\raw\n4.wav" />
+    <AndroidResource Include="Resources\raw\n5.wav" />
+    <AndroidResource Include="Resources\raw\n6.wav" />
+    <AndroidResource Include="Resources\raw\n7.wav" />
+    <AndroidResource Include="Resources\raw\n8.wav" />
+    <AndroidResource Include="Resources\raw\n9.wav" />
+    <AndroidResource Include="Resources\raw\n10.wav" />
+    <AndroidResource Include="Resources\raw\n11.wav" />
+    <AndroidResource Include="Resources\raw\n12.wav" />
+    <AndroidResource Include="Resources\raw\n13.wav" />
+    <AndroidResource Include="Resources\raw\n14.wav" />
+    <AndroidResource Include="Resources\raw\n15.wav" />
+    <AndroidResource Include="Resources\raw\n16.wav" />
+    <AndroidResource Include="Resources\raw\n17.wav" />
+    <AndroidResource Include="Resources\raw\n18.wav" />
+    <AndroidResource Include="Resources\raw\n19.wav" />
+    <AndroidResource Include="Resources\raw\n20.wav" />
+    <AndroidResource Include="Resources\raw\n30.wav" />
+    <AndroidResource Include="Resources\raw\n40.wav" />
+    <AndroidResource Include="Resources\raw\n50.wav" />
+    <AndroidResource Include="Resources\raw\n60.wav" />
+    <AndroidResource Include="Resources\raw\n70.wav" />
+    <AndroidResource Include="Resources\raw\n80.wav" />
+    <AndroidResource Include="Resources\raw\n90.wav" />
+    <AndroidResource Include="Resources\raw\n100.wav" />
+    <AndroidResource Include="Resources\raw\n200.wav" />
+    <AndroidResource Include="Resources\raw\n300.wav" />
+    <AndroidResource Include="Resources\raw\n400.wav" />
+    <AndroidResource Include="Resources\raw\n500.wav" />
+    <AndroidResource Include="Resources\raw\n600.wav" />
+    <AndroidResource Include="Resources\raw\n700.wav" />
+    <AndroidResource Include="Resources\raw\n800.wav" />
+    <AndroidResource Include="Resources\raw\n900.wav" />
+    <AndroidResource Include="Resources\raw\attention.wav" />
+    <AndroidResource Include="Resources\raw\visitorWithNumber.wav" />
+    <AndroidResource Include="Resources\raw\invited.wav" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="TextToSpeechPlugin">

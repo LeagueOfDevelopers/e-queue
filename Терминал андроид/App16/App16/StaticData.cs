@@ -28,14 +28,12 @@ namespace App16
     {
         public static int Size { get; set; }
         public static List<string> Config { get; set; }
-        static MediaPlayer player;
         public StaticData(int size)
         {
             Size = size;
             Config = new List<string>();
             References = new List<ReferenceOne>();
             ReferencesOnDisplay = new List<ReferenceOne>();
-            player = MediaPlayer.Create(Application.Context, Resource.Raw.file1);
         }
 
         //Работа с обновлением данных:
@@ -57,12 +55,6 @@ namespace App16
         public static void StopUpdating()
         {
             RefLoop.Abort();
-        }
-        public async static void Say(string text)
-        {
-            player.Start();
-            await Task.Delay(3000);
-            CrossTextToSpeech.Current.Speak(text, true, null, 1.15f, 0.9f, null);
         }
         private static void ThreadRefLoop(Object ob)
         {
@@ -87,8 +79,7 @@ namespace App16
         {
             if (Number != num)
             {
-                string nstr = num.ToString("# # # # # #");
-                Say(String.Format("Клиент номер, {0:s}. Пройдите в кабинет.", nstr));
+                Player.InviteNextNumber(num);
             }
         }
         private static void LoadConfig()

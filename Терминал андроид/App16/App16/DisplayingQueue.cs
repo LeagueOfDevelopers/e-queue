@@ -54,8 +54,6 @@ namespace App16
             RefreshLoop();
             UpdatingRef();
             CheckConnectionLoop();
-
-            StaticData.Say("...");
         }
 
         private async void RefreshLoop()
