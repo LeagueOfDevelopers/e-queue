@@ -14,6 +14,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Content.PM;
 using Android.Graphics;
+using System.Threading;
 
 namespace App16
 {
@@ -26,28 +27,33 @@ namespace App16
         TextView internetAddress;
         Button bexit;
         bool q;
+        bool w; // переменна€ дл€отмены перезапуска
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.QRCodeRef);
 
-            watch = (TextView)FindViewById(Resource.Id.textClock);
+            watch = (TextView)FindViewById(Resource.Id.textClock); watch.SystemUiVisibility = (StatusBarVisibility)Android.Views.SystemUiFlags.HideNavigation;
             number = (TextView)FindViewById(Resource.Id.textView8); number.Text = StaticData.ChangedNumber.ToString();
             qrcode = (ImageView)FindViewById(Resource.Id.imageqrcode); qrcode.SetImageBitmap(StaticData.QRCode);
             bexit = (Button)FindViewById(Resource.Id.bexit3); bexit.Click += bexit_Click;
             internetAddress = (TextView)FindViewById(Resource.Id.textView10); internetAddress.Text = String.Format("ѕодробную информацию узнайте на сайте http://studok.misis.ru/{0:d} ", StaticData.ChangedNumber);
 
-            q = true;
+            q = true; w = true;
 
             Sleep();
 
             RefreshLoop();
             CheckConnectionLoop();
+
+            Window.DecorView.SystemUiVisibilityChange += DecorView_SystemUiVisibilityChange;
         }
 
         private async void Sleep()
         {
             await Task.Delay(30000);
+            w = false;
+            StartActivity(typeof(DisplayingQueue));
             this.Finish();
         }
 
@@ -62,6 +68,8 @@ namespace App16
 
         private void bexit_Click(object sender, EventArgs e)
         {
+            w = false;
+            StartActivity(typeof(DisplayingQueue));
             this.Finish();
         }
 
@@ -90,10 +98,33 @@ namespace App16
                 if (exit)
                 {
                     StartActivity(typeof(MainActivity));
+                    w = false;
                     this.Finish();
                 }
             });
             dialog.Show();
+        }
+
+        public override void OnBackPressed()
+        {
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        private void DecorView_SystemUiVisibilityChange(object sender, View.SystemUiVisibilityChangeEventArgs e)
+        {
+            Thread.Sleep(50);
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        protected override void OnPause()
+        {
+            base.OnPause();
+            if (w)
+            {
+                Intent intent = new Intent(Intent.ActionMain);
+                intent.AddCategory("EQueueLouncher");
+                this.Finish();
+                StaticData.StopUpdating();
+                StartActivity(intent);
+            }
         }
     }
 }

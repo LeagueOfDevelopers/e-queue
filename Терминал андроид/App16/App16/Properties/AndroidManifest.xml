@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="App5.App5" android:versionCode="1" android:versionName="1.0">
-	<uses-sdk android:minSdkVersion="14" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="App16.App16" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="15" />
+	<application android:label="App16" android:icon="@drawable/Icon"></application>
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="App5" android:icon="@drawable/Icon"></application>
+	<uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 </manifest>

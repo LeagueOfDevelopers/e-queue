@@ -26,13 +26,14 @@ namespace App16
         EditText t1, t2, t3, t4, t5;
         LinearLayout mainlayout;
         bool q;
+        bool exit; // переменная дляотмены перезапуска
         Thread SleepThread;
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Reference);
 
-            watch = (TextView)FindViewById(Resource.Id.textClock);
+            watch = (TextView)FindViewById(Resource.Id.textClock); watch.SystemUiVisibility = (StatusBarVisibility)Android.Views.SystemUiFlags.HideNavigation;
             t1 = (EditText)FindViewById(Resource.Id.t1);
             t2 = (EditText)FindViewById(Resource.Id.t2);
             t3 = (EditText)FindViewById(Resource.Id.t3);
@@ -41,19 +42,22 @@ namespace App16
             bsend = (Button)FindViewById(Resource.Id.bsend); bsend.Click += button_Click; bsend.Tag = 1;
             bexit = (Button)FindViewById(Resource.Id.bexit3); bexit.Click += button_Click; bexit.Tag = 0;
             mainlayout = (LinearLayout)FindViewById(Resource.Id.mainlayout); mainlayout.Click += button_Click; mainlayout.Tag = 3;
-            
-            q = true;
+
+            q = true; exit = true;
 
             SleepThread = new Thread(new ParameterizedThreadStart(Sleep));
             SleepThread.Start();
 
             RefreshLoop();
             CheckConnectionLoop();
+
+            Window.DecorView.SystemUiVisibilityChange += DecorView_SystemUiVisibilityChange;
         }
 
         void Sleep(object ob)
         {
             Thread.Sleep(120000);
+            exit = false;
             this.Finish();
         }
 
@@ -71,12 +75,13 @@ namespace App16
             View s = (View)sender;
             switch(int.Parse(s.Tag.ToString()))
             {
-                case 0:
-                    StartActivity(typeof(Buttons));
-                    this.Finish();
-                    break;
                 case 1:
                     if(CheckValidation()) SendReference();
+                    break;
+                case 0:
+                    exit = false;
+                    StartActivity(typeof(Buttons));
+                    this.Finish();
                     break;
             }
             SleepThread.Abort();
@@ -109,6 +114,7 @@ namespace App16
                     SCT.Send(String.Format("{0}_{1}_{2}_{3}", t2.Text, DateTime.Parse(t3.Text).ToString("dd.MM.yyyy"), t4.Text, t5.Text));
                     if (bool.Parse(SCT.Receive()))
                     {
+                        exit = false;
                         StaticData.CreateQRCode(String.Format("Вы успешно отправили заявку на справку.\nВведенные вами данные:\nНомер студенческого билета: {0}\nФИО: {1}\nДата рождения: {2}\nНаправление справки: {3}\nДополнительная информация: {4}\nВсю подробную информацию о продвижении очереди узнайте на сайте http://studok.misis.ru \n\nУдачного дня!", t1.Text, t2.Text, t3.Text, t4.Text, t5.Text));
                         StartActivity(typeof(QRCodeDisplayingReference));
                         SCT.SCTisFree = true;
@@ -150,10 +156,33 @@ namespace App16
                 if (exit)
                 {
                     StartActivity(typeof(MainActivity));
+                    exit = false;
                     this.Finish();
                 }
             });
             dialog.Show();
+        }
+
+        public override void OnBackPressed()
+        {
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        private void DecorView_SystemUiVisibilityChange(object sender, View.SystemUiVisibilityChangeEventArgs e)
+        {
+            Thread.Sleep(50);
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        protected override void OnPause()
+        {
+            base.OnPause();
+            if (exit)
+            {
+                Intent intent = new Intent(Intent.ActionMain);
+                intent.AddCategory("EQueueLouncher");
+                this.Finish();
+                StaticData.StopUpdating();
+                StartActivity(intent);
+            }
         }
     }
 }

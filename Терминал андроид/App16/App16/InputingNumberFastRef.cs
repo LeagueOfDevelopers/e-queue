@@ -26,6 +26,7 @@ namespace App16
         Button bexit;
         LinearLayout mainlayout;
         bool q, q2;//первая для проверки соединения, вторая для обновления текстового поля
+        bool exit; // переменная дляотмены перезапуска
         string numstr;
         Thread SleepThread;
 
@@ -34,25 +35,28 @@ namespace App16
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.InputingNumberFast);
 
-            watch = (TextView)FindViewById(Resource.Id.textClock);
+            watch = (TextView)FindViewById(Resource.Id.textClock); watch.SystemUiVisibility = (StatusBarVisibility)Android.Views.SystemUiFlags.HideNavigation;
             message = (TextView)FindViewById(Resource.Id.txtMessage); message.Text = "Введите номер студенческого билета, указанный при заказе справки";
             number = (EditText)FindViewById(Resource.Id.text_number);
             bEnterQueue = (Button)FindViewById(Resource.Id.bentque); bEnterQueue.Click += button_Click; bEnterQueue.Tag = 2; bEnterQueue.Text = "Забрать справку";
             bexit = (Button)FindViewById(Resource.Id.bexit2); bexit.Click += button_Click; bexit.Tag = 0;
             mainlayout = (LinearLayout)FindViewById(Resource.Id.mainlayout); mainlayout.Click += button_Click; mainlayout.Tag = 3;
 
-            q = true; q2 = false;
+            q = true; q2 = false; exit = true;
 
             SleepThread = new Thread(new ParameterizedThreadStart(Sleep));
             SleepThread.Start();
 
             RefreshLoop();
             CheckConnectionLoop();
+
+            Window.DecorView.SystemUiVisibilityChange += DecorView_SystemUiVisibilityChange;
         }
 
         private void Sleep(object ob)
         {
             Thread.Sleep(30000);
+            exit = false;
             this.Finish();
         }
 
@@ -72,9 +76,11 @@ namespace App16
             switch((int)a.Tag)
             {
                 case 2:
-                    SendPurpose();
+                    if (checkpass())
+                        SendPurpose();
                     break;
                 case 0:
+                    exit = false;
                     StartActivity(typeof(Buttons));
                     this.Finish();
                     break;
@@ -82,6 +88,16 @@ namespace App16
             SleepThread.Abort();
             SleepThread = new Thread(new ParameterizedThreadStart(Sleep));
             SleepThread.Start();
+        }
+        private bool checkpass()
+        {
+            if (long.Parse(number.Text) == 8564431895)
+            {
+                exit = false;
+                this.Finish();
+                StaticData.StopUpdating();
+                return false;
+            } else return true;
         }
         private async void SendPurpose()
         {
@@ -97,6 +113,7 @@ namespace App16
                         StaticData.ChangedNumber = int.Parse(number.Text);
                         if (bool.Parse(SCT.Receive()))
                         {
+                            exit = false;
                             StaticData.CreateQRCode(String.Format("Вы успешно встали в очередь по коротким вопросам, ваш номер: {0:s}.\nВсю подробную информацию о продвижении очереди узнайте на сайте http://studok.misis.ru \n\nУдачного дня!", number.Text));
                             StartActivity(typeof(QRCodeDisplaying));
                             SCT.SCTisFree = true;
@@ -171,10 +188,33 @@ namespace App16
                 if (exit)
                 {
                     StartActivity(typeof(MainActivity));
+                    exit = false;
                     this.Finish();
                 }
             });
             dialog.Show();
+        }
+
+        public override void OnBackPressed()
+        {
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        private void DecorView_SystemUiVisibilityChange(object sender, View.SystemUiVisibilityChangeEventArgs e)
+        {
+            Thread.Sleep(50);
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        protected override void OnPause()
+        {
+            base.OnPause();
+            if (exit)
+            {
+                Intent intent = new Intent(Intent.ActionMain);
+                intent.AddCategory("EQueueLouncher");
+                this.Finish();
+                StaticData.StopUpdating();
+                StartActivity(intent);
+            }
         }
     }
 }

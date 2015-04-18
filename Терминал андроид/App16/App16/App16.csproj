@@ -104,7 +104,6 @@
     <AndroidResource Include="Resources\values\Styles.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\raw\bumbumbum.mp3" />
     <AndroidResource Include="Resources\raw\n1.wav" />
     <AndroidResource Include="Resources\raw\n2.wav" />
@@ -155,6 +154,9 @@
       <Visible>False</Visible>
       <Version>1.4.7.2</Version>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

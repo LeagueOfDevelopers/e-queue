@@ -26,6 +26,11 @@ namespace App16
 
     class StaticData
     {
+        public static StatusBarVisibility Flags { get { return flags; } set { flags = value; } }
+        static StatusBarVisibility flags = (StatusBarVisibility)Android.Views.SystemUiFlags.Immersive
+               | (StatusBarVisibility)Android.Views.SystemUiFlags.Fullscreen
+               | (StatusBarVisibility)Android.Views.SystemUiFlags.HideNavigation;
+
         public static int Size { get; set; }
         public static List<string> Config { get; set; }
         public StaticData(int size)
@@ -55,6 +60,7 @@ namespace App16
         public static void StopUpdating()
         {
             RefLoop.Abort();
+            SCT.Send(requests.EOSes.ToString());
         }
         private static void ThreadRefLoop(Object ob)
         {

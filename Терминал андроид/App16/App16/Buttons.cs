@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Threading;
 
 using Android.App;
 using Android.Content;
@@ -31,6 +32,8 @@ namespace App16
         Button bexit;
         Button[] buttons;
         bool q;//переменная для проверки соединения(отсечка)
+        bool w; // переменная дляотмены перезапуска
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -48,19 +51,20 @@ namespace App16
             b9 = (Button)FindViewById(Resource.Id.b9); b9.Click += button_Click; b9.Tag = 9;
             bexit = (Button)FindViewById(Resource.Id.bexit); bexit.Click += button_Click; bexit.Tag = 0;
             buttons = new Button[] { b1, b2, b3, b4, b5, b6, b7, b8, b9 };
-            q = true;
-        }
-        protected override void OnResume()
-        {
-            base.OnResume();
+            q = true; w = true;
+
             RefreshLoop();
             CheckConnectionLoop();
             Sleep();
+
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+            Window.DecorView.SystemUiVisibilityChange += DecorView_SystemUiVisibilityChange;
         }
 
         private async void Sleep()
         {
             await Task.Delay(30000);
+            w = false;
             this.Finish();
         }//таймер бездействия
 
@@ -92,9 +96,12 @@ namespace App16
                     StaticData.StopUpdating();
                     try { ShowMessage("Ошибка", "Потеряно соединение с сервером.", true); }
                     catch { }
+                    await Task.Delay(3000);
                     q = false;
+                    StartActivity(typeof(MainActivity));
+                    this.Finish();
                 }
-                await Task.Delay(100);
+                await Task.Delay(3000);
             }
         }
         private void ShowMessage(string title, string message, bool exit)
@@ -107,6 +114,7 @@ namespace App16
                 if (exit)
                 {
                     StartActivity(typeof(MainActivity));
+                    w = false;
                     this.Finish();
                 }
             });
@@ -116,6 +124,7 @@ namespace App16
         private void button_Click(object sender, EventArgs e)
         {
             Button a = (Button)sender;
+            w = false;
             switch ((int)a.Tag)
             {
                 case 1:
@@ -164,8 +173,31 @@ namespace App16
                     this.Finish();
                     break;
                 case 0:
+                    StartActivity(typeof(DisplayingQueue));
                     this.Finish();
                     break;
+            }
+        }
+
+        public override void OnBackPressed()
+        {
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        private void DecorView_SystemUiVisibilityChange(object sender, View.SystemUiVisibilityChangeEventArgs e)
+        {
+            Thread.Sleep(50);
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        protected override void OnPause()
+        {
+            base.OnPause();
+            if (w)
+            {
+                Intent intent = new Intent(Intent.ActionMain);
+                intent.AddCategory("EQueueLouncher");
+                this.Finish();
+                StaticData.StopUpdating();
+                StartActivity(intent);
             }
         }
     }

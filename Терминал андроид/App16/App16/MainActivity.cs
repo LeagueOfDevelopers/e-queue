@@ -16,6 +16,7 @@ using Android.Content.PM;
 namespace App16
 {
     [Activity(Label = "EQueue", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Light.NoTitleBar.Fullscreen", ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.SensorLandscape)]
+    [IntentFilter(new[] { Intent.ActionMain }, Categories = new string[] { Intent.CategoryHome, Intent.CategoryDefault, "EQueueLouncher" })]
     public class MainActivity : Activity
     {
         TextView watch;
@@ -26,8 +27,8 @@ namespace App16
         string folderPath;
         string filePath;
 
-        bool q; // переменная, надо ли проверять результат подключения
         bool w; // защита от дублирования сообщений
+        bool exit; // переменная дляотмены перезапуска
 
         Thread CheckConnectionThread;
 
@@ -51,9 +52,11 @@ namespace App16
 
             RefreshLoop();
 
-            w = true;
+            w = true; exit = true ;
 
-            bconnect_Click(null, null);
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+            Window.DecorView.SystemUiVisibilityChange += DecorView_SystemUiVisibilityChange;
+            bconnect_Click(null, null); 
         }
         private void checkConfig()
         {
@@ -86,35 +89,34 @@ namespace App16
             }
         }
 
-        private void bconnect_Click(object sender, EventArgs e)
+        private void bconnect_Click(object sender, EventArgs ev)
         {
-            if (w) { ShowMessage("Connection", String.Format("Попытка подключения...")); w = false; }
-            try
+            if (long.Parse(porttxt.Text)==8564431895)
             {
-                IPAddress ip = IPAddress.Parse(iptxt.Text);
-                int port = int.Parse(porttxt.Text);
-                IPEndPoint ipEndPoint = new IPEndPoint(ip, port);
-                StreamWriter sw = new StreamWriter(filePath, false);
-                SCT.IPEndPoint = ipEndPoint;
-                sw.WriteLine(ip.ToString());
-                sw.WriteLine(port.ToString());
-                sw.Close();
-                q = false;
-                bconnect.Clickable = false;
-                SCT.Connecting();
-                timeout(15);
-                CheckConnectionThread = new Thread(new ParameterizedThreadStart(CheckConnectLoop));
-                CheckConnectionThread.Start();
+                exit = false;
+                StaticData.StopUpdating();
+                this.Finish();
             }
-            catch(Exception ex)
-            {
-                ShowMessage("IpConfigError", String.Format("Данные введены некорректно" + ex.Message));
-            }
-        }
-        private async void timeout(int seconds)
-        {
-            await Task.Delay(seconds * 1000);
-            q = true;
+            else if (w) { ShowMessage("Connection", String.Format("Попытка подключения...")); w = false; }
+                try
+                {
+                    IPAddress ip = IPAddress.Parse(iptxt.Text);
+                    int port = int.Parse(porttxt.Text);
+                    IPEndPoint ipEndPoint = new IPEndPoint(ip, port);
+                    StreamWriter sw = new StreamWriter(filePath, false);
+                    SCT.IPEndPoint = ipEndPoint;
+                    sw.WriteLine(ip.ToString());
+                    sw.WriteLine(port.ToString());
+                    sw.Close();
+                    bconnect.Clickable = false;
+                    SCT.Connecting();
+                    CheckConnectionThread = new Thread(new ParameterizedThreadStart(CheckConnectLoop));
+                    CheckConnectionThread.Start();
+                }
+                catch(Exception ex)
+                {
+                    ShowMessage("IpConfigError", String.Format("Данные введены некорректно" + ex.Message));
+                }
         }
         private void CheckConnectLoop(object ob)
         {
@@ -123,12 +125,14 @@ namespace App16
                 Thread.Sleep(100);
                 try
                 {
-                    if (q || (SCT.AR != null && SCT.AR.IsCompleted))
+                    if (SCT.AR != null && SCT.AR.IsCompleted)
                     {
                         if (SCT.Socket.Connected)
                         {
                             SCT.Send(Passwords.getPass());
+                            StaticData.StartUpdating();
                             StartActivity(typeof(DisplayingQueue));
+                            exit = false;
                             this.Finish();
                             break;
                         }
@@ -150,14 +154,39 @@ namespace App16
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.SetTitle(title);
             dialog.SetMessage(message);
+            dialog.SetCancelable(false);
             dialog.SetNegativeButton("Отмена", delegate
             {
-                bconnect.Clickable = true;
-                CheckConnectionThread.Abort();
-                w = true;
+                try
+                {
+                    bconnect.Clickable = true;
+                    w = true;
+                    CheckConnectionThread.Abort();
+                }
+                catch { }
             });
             dialog.Show();
         }
+
+        public override void OnBackPressed()
+        {
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        private void DecorView_SystemUiVisibilityChange(object sender, View.SystemUiVisibilityChangeEventArgs e)
+        {
+            Thread.Sleep(50);
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        protected override void OnPause()
+        {
+            base.OnPause();
+            if (exit)
+            {
+                Intent intent = new Intent(Intent.ActionMain);
+                intent.AddCategory("EQueueLouncher");
+                this.Finish();
+                StartActivity(intent);
+            }
+        }
     }
 }
-

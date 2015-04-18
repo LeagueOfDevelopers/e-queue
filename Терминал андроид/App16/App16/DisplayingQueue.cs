@@ -13,6 +13,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Content.PM;
+using Android.Hardware;
 
 namespace App16
 {
@@ -30,10 +31,12 @@ namespace App16
         ListAdapter adapter;
         Button benter;
         bool q;//переменная для проверки соединения(отсечка)
+        bool w; // переменная дляотмены перезапуска
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
             SetContentView(Resource.Layout.WatchQueue);
 
             watch = (TextView)FindViewById(Resource.Id.textClock);
@@ -44,16 +47,16 @@ namespace App16
             textInfo3 = (TextView)FindViewById(Resource.Id.textInfo3);
             textInfo4 = (TextView)FindViewById(Resource.Id.textInfo4);
             listView1 = (ListView)FindViewById(Resource.Id.listView1);
-            benter = (Button)FindViewById(Resource.Id.benter);
-            benter.Click += button_Click;
+            benter = (Button)FindViewById(Resource.Id.benter); benter.Tag = 1; benter.Click += button_Click;
 
-            StaticData.StartUpdating();
-
-            q = true;
+            q = true; w = true;
 
             RefreshLoop();
             UpdatingRef();
             CheckConnectionLoop();
+
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+            Window.DecorView.SystemUiVisibilityChange += DecorView_SystemUiVisibilityChange;
         }
 
         private async void RefreshLoop()
@@ -102,7 +105,7 @@ namespace App16
                         StartActivity(typeof(MainActivity));
                         this.Finish();
                     }
-                    await Task.Delay(100);
+                    await Task.Delay(3000);
             }
         }
 
@@ -117,15 +120,48 @@ namespace App16
                 if (exit)
                 {
                     StartActivity(typeof(MainActivity));
+                    w = false;
                     this.Finish();
                 }
             });
             dialog.Show();
+
+
         }
 
         private void button_Click(object sender, EventArgs e)
         {
-            StartActivity(typeof(Buttons));
+            View q = (View)sender;
+            switch ((int)q.Tag)
+            {
+                case 1:
+                    w = false;
+                    StartActivity(typeof(Buttons));
+                    this.Finish();
+                    break;
+            }
+        }
+
+        public override void OnBackPressed()
+        {
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        private void DecorView_SystemUiVisibilityChange(object sender, View.SystemUiVisibilityChangeEventArgs e)
+        {
+            Thread.Sleep(50);
+            Window.DecorView.SystemUiVisibility = StaticData.Flags;
+        }
+        protected override void OnPause()
+        {
+            base.OnPause();
+            if (w)
+            {
+                Intent intent = new Intent(Intent.ActionMain);
+                intent.AddCategory("EQueueLouncher");
+                this.Finish();
+                StaticData.StopUpdating();
+                StartActivity(intent);
+            }
         }
     }
 }

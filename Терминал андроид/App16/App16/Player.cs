@@ -30,9 +30,9 @@ namespace App16
                 Resource.Raw.visitorWithNumber
             };
             AddDigits();
-            play();
+            Play();
         }
-        private static void play()
+        private static void Play()
         {
             player = new MediaPlayer[sounds.Count];
             for (int i = 0; i < player.Length; i++)
@@ -47,65 +47,99 @@ namespace App16
             {
                 if (number.Length == 4)
                 {
-                    switch(number[i*2])
+                    if (number[i * 2] == '1')
+                        switch (number[i * 2 + 1])
+                        {
+                            case '1':
+                                sounds.Add(Resource.Raw.n11);
+                                break;
+                            case '2':
+                                sounds.Add(Resource.Raw.n12);
+                                break;
+                            case '3':
+                                sounds.Add(Resource.Raw.n13);
+                                break;
+                            case '4':
+                                sounds.Add(Resource.Raw.n14);
+                                break;
+                            case '5':
+                                sounds.Add(Resource.Raw.n15);
+                                break;
+                            case '6':
+                                sounds.Add(Resource.Raw.n16);
+                                break;
+                            case '7':
+                                sounds.Add(Resource.Raw.n17);
+                                break;
+                            case '8':
+                                sounds.Add(Resource.Raw.n18);
+                                break;
+                            case '9':
+                                sounds.Add(Resource.Raw.n19);
+                                break;
+                            case '0':
+                                sounds.Add(Resource.Raw.n10);
+                                break;
+                        }
+                    else
                     {
-                        case '1':
-                            sounds.Add(Resource.Raw.n10);
-                            break;
-                        case '2':
-                            sounds.Add(Resource.Raw.n20);
-                            break;
-                        case '3':
-                            sounds.Add(Resource.Raw.n30);
-                            break;
-                        case '4':
-                            sounds.Add(Resource.Raw.n40);
-                            break;
-                        case '5':
-                            sounds.Add(Resource.Raw.n50);
-                            break;
-                        case '6':
-                            sounds.Add(Resource.Raw.n60);
-                            break;
-                        case '7':
-                            sounds.Add(Resource.Raw.n70);
-                            break;
-                        case '8':
-                            sounds.Add(Resource.Raw.n80);
-                            break;
-                        case '9':
-                            sounds.Add(Resource.Raw.n90);
-                            break;
-                    }
-                    switch (number[i * 2 + 1])
-                    {
-                        case '1':
-                            sounds.Add(Resource.Raw.n1);
-                            break;
-                        case '2':
-                            sounds.Add(Resource.Raw.n2);
-                            break;
-                        case '3':
-                            sounds.Add(Resource.Raw.n3);
-                            break;
-                        case '4':
-                            sounds.Add(Resource.Raw.n4);
-                            break;
-                        case '5':
-                            sounds.Add(Resource.Raw.n5);
-                            break;
-                        case '6':
-                            sounds.Add(Resource.Raw.n6);
-                            break;
-                        case '7':
-                            sounds.Add(Resource.Raw.n7);
-                            break;
-                        case '8':
-                            sounds.Add(Resource.Raw.n8);
-                            break;
-                        case '9':
-                            sounds.Add(Resource.Raw.n9);
-                            break;
+                        switch (number[i * 2])
+                        {
+                            case '2':
+                                sounds.Add(Resource.Raw.n20);
+                                break;
+                            case '3':
+                                sounds.Add(Resource.Raw.n30);
+                                break;
+                            case '4':
+                                sounds.Add(Resource.Raw.n40);
+                                break;
+                            case '5':
+                                sounds.Add(Resource.Raw.n50);
+                                break;
+                            case '6':
+                                sounds.Add(Resource.Raw.n60);
+                                break;
+                            case '7':
+                                sounds.Add(Resource.Raw.n70);
+                                break;
+                            case '8':
+                                sounds.Add(Resource.Raw.n80);
+                                break;
+                            case '9':
+                                sounds.Add(Resource.Raw.n90);
+                                break;
+                        }
+                        switch (number[i * 2 + 1])
+                        {
+                            case '1':
+                                sounds.Add(Resource.Raw.n1);
+                                break;
+                            case '2':
+                                sounds.Add(Resource.Raw.n2);
+                                break;
+                            case '3':
+                                sounds.Add(Resource.Raw.n3);
+                                break;
+                            case '4':
+                                sounds.Add(Resource.Raw.n4);
+                                break;
+                            case '5':
+                                sounds.Add(Resource.Raw.n5);
+                                break;
+                            case '6':
+                                sounds.Add(Resource.Raw.n6);
+                                break;
+                            case '7':
+                                sounds.Add(Resource.Raw.n7);
+                                break;
+                            case '8':
+                                sounds.Add(Resource.Raw.n8);
+                                break;
+                            case '9':
+                                sounds.Add(Resource.Raw.n9);
+                                break;
+                        }
                     }
                 }
                 else
@@ -140,65 +174,99 @@ namespace App16
                             sounds.Add(Resource.Raw.n900);
                             break;
                     }
-                    switch (number[i * 3+1])
+                    if (number[i * 3 + 1] == '1')
+                        switch (number[i * 3 + 2])
+                        {
+                            case '1':
+                                sounds.Add(Resource.Raw.n11);
+                                break;
+                            case '2':
+                                sounds.Add(Resource.Raw.n12);
+                                break;
+                            case '3':
+                                sounds.Add(Resource.Raw.n13);
+                                break;
+                            case '4':
+                                sounds.Add(Resource.Raw.n14);
+                                break;
+                            case '5':
+                                sounds.Add(Resource.Raw.n15);
+                                break;
+                            case '6':
+                                sounds.Add(Resource.Raw.n16);
+                                break;
+                            case '7':
+                                sounds.Add(Resource.Raw.n17);
+                                break;
+                            case '8':
+                                sounds.Add(Resource.Raw.n18);
+                                break;
+                            case '9':
+                                sounds.Add(Resource.Raw.n19);
+                                break;
+                            case '0':
+                                sounds.Add(Resource.Raw.n10);
+                                break;
+                        }
+                    else
                     {
-                        case '1':
-                            sounds.Add(Resource.Raw.n10);
-                            break;
-                        case '2':
-                            sounds.Add(Resource.Raw.n20);
-                            break;
-                        case '3':
-                            sounds.Add(Resource.Raw.n30);
-                            break;
-                        case '4':
-                            sounds.Add(Resource.Raw.n40);
-                            break;
-                        case '5':
-                            sounds.Add(Resource.Raw.n50);
-                            break;
-                        case '6':
-                            sounds.Add(Resource.Raw.n60);
-                            break;
-                        case '7':
-                            sounds.Add(Resource.Raw.n70);
-                            break;
-                        case '8':
-                            sounds.Add(Resource.Raw.n80);
-                            break;
-                        case '9':
-                            sounds.Add(Resource.Raw.n90);
-                            break;
-                    }
-                    switch (number[i * 3 + 2])
-                    {
-                        case '1':
-                            sounds.Add(Resource.Raw.n1);
-                            break;
-                        case '2':
-                            sounds.Add(Resource.Raw.n2);
-                            break;
-                        case '3':
-                            sounds.Add(Resource.Raw.n3);
-                            break;
-                        case '4':
-                            sounds.Add(Resource.Raw.n4);
-                            break;
-                        case '5':
-                            sounds.Add(Resource.Raw.n5);
-                            break;
-                        case '6':
-                            sounds.Add(Resource.Raw.n6);
-                            break;
-                        case '7':
-                            sounds.Add(Resource.Raw.n7);
-                            break;
-                        case '8':
-                            sounds.Add(Resource.Raw.n8);
-                            break;
-                        case '9':
-                            sounds.Add(Resource.Raw.n9);
-                            break;
+                        switch (number[i * 3 + 1])
+                        {
+                            case '2':
+                                sounds.Add(Resource.Raw.n20);
+                                break;
+                            case '3':
+                                sounds.Add(Resource.Raw.n30);
+                                break;
+                            case '4':
+                                sounds.Add(Resource.Raw.n40);
+                                break;
+                            case '5':
+                                sounds.Add(Resource.Raw.n50);
+                                break;
+                            case '6':
+                                sounds.Add(Resource.Raw.n60);
+                                break;
+                            case '7':
+                                sounds.Add(Resource.Raw.n70);
+                                break;
+                            case '8':
+                                sounds.Add(Resource.Raw.n80);
+                                break;
+                            case '9':
+                                sounds.Add(Resource.Raw.n90);
+                                break;
+                        }
+                        switch (number[i * 3 + 2])
+                        {
+                            case '1':
+                                sounds.Add(Resource.Raw.n1);
+                                break;
+                            case '2':
+                                sounds.Add(Resource.Raw.n2);
+                                break;
+                            case '3':
+                                sounds.Add(Resource.Raw.n3);
+                                break;
+                            case '4':
+                                sounds.Add(Resource.Raw.n4);
+                                break;
+                            case '5':
+                                sounds.Add(Resource.Raw.n5);
+                                break;
+                            case '6':
+                                sounds.Add(Resource.Raw.n6);
+                                break;
+                            case '7':
+                                sounds.Add(Resource.Raw.n7);
+                                break;
+                            case '8':
+                                sounds.Add(Resource.Raw.n8);
+                                break;
+                            case '9':
+                                sounds.Add(Resource.Raw.n9);
+                                break;
+                        }
                     }
                 }
             }
